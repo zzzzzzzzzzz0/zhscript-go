@@ -3,38 +3,54 @@ package zhscript
 import (
 	"strings"
 	"strconv"
-	"container/list"
 )
 
-func (this *Qv___) var_name2__(code code___, lvl uint, qv1 *Qv___, is_lock1 bool, codes *codes___,
-buf1 *Buf___) (qv *Qv___, is_lock bool, err2 *Errinfo___) {
+func (this *Qv___) var_name3__(s string, qv1 *Qv___, is_lock1, is_no_arg1 bool, shou *List___) (qv *Qv___, is_lock, is_no_arg bool, err2 *Errinfo___) {
+	qv = qv1
+	is_lock = is_lock1
+	is_no_arg = is_no_arg1
+	if o_liucheng_ {
+		o__('x', "%s", s)
+	}
+	switch s {
+	case Kws_.Up.s:
+		qv = qv.up
+		if qv == nil {
+			err2 = New_errinfo__(Errs_.Annota)
+			return
+		}
+	case Kws_.Lock.s:
+		is_lock = true
+	case Kws_.Noarg.s:
+		is_no_arg = true
+	case Kws_.Top.s:
+		qv = top_qv_
+	default:
+		if shou != nil {
+			shou.PushBack(s)
+		}
+	}
+	return
+}
+
+func (this *Qv___) var_name2__(code code___, lvl uint, qv1 *Qv___, is_lock1, is_no_arg1 bool, buf1 *Buf___) (qv *Qv___, is_lock, is_no_arg bool, err2 *Errinfo___) {
 	kw := code.kw__()
 	if o_liucheng_ {
 		o__('k', "%s", kw)
 	}
 	qv = qv1
 	is_lock = is_lock1
+	is_no_arg = is_no_arg1
 	switch(kw) {
 	case Kws_.Kaifangkuohao:
-		codes2 := code.(*code_1___).codes
-		for _, code2 := range codes2.a {
-			t := code2.(*code_text___)
-			if o_liucheng_ {
-				o__('x', "%s", t.s)
-			}
-			switch t.s {
-			case Kws_.Up.s:
-				qv = qv.up_qv
-				if qv == nil {
-					err2 = New_errinfo__(Errs_.Annota, codes.String())
+		for _, code2 := range code.(*code_1___).codes.a {
+			if codet, ok := code2.(*code_text___); ok {
+				qv, is_lock, is_no_arg, err2 = this.var_name3__(codet.s, qv, is_lock, is_no_arg, buf1.Annota)
+				if err2 != nil {
 					return
 				}
-			case Kws_.Lock.s:
-				is_lock = true
-			case Kws_.Top.s:
-				qv = top_qv_
-			default:
-				err2 = New_errinfo__(Errs_.Annota, codes.String())
+			} else {
+				err2 = New_errinfo__(Errs_.Annota)
 				return
 			}
 		}
@@ -44,9 +60,8 @@ buf1 *Buf___) (qv *Qv___, is_lock bool, err2 *Errinfo___) {
 			return
 		}
 	case Kws_.Kaihuakuohao:
-		codes2 := code.(*code_1___).codes
-		for _, code2 := range codes2.a {
-			qv, is_lock, err2 = this.var_name2__(code2, lvl, qv1, is_lock, codes2, buf1)
+		for _, code2 := range code.(*code_1___).codes.a {
+			qv, is_lock, is_no_arg, err2 = this.var_name2__(code2, lvl, qv, is_lock, is_no_arg, buf1)
 			if err2 != nil {
 				return
 			}
@@ -62,18 +77,19 @@ buf1 *Buf___) (qv *Qv___, is_lock bool, err2 *Errinfo___) {
 	return
 }
 
-func (this *Qv___) var_name__(codes *codes___, lvl uint, buf1 *Buf___) (qv *Qv___, is_lock bool, err2 *Errinfo___) {
+func (this *Qv___) var_name__(codes *codes___, lvl uint, buf1 *Buf___) (qv *Qv___, is_lock, is_no_arg bool, err2 *Errinfo___) {
 	qv = this
 	for _, code := range codes.a {
-		qv, is_lock, err2 = this.var_name2__(code, lvl, qv, is_lock, codes, buf1)
+		qv, is_lock, is_no_arg, err2 = this.var_name2__(code, lvl, qv, is_lock, is_no_arg, buf1)
 		if err2 != nil {
+			err2.Add__(codes.String())
 			return
 		}
 	}
 	return
 }
 
-func (this *Qv___) z2_var2__(name string, qv  *Qv___, codes *codes___, lvl uint, kw *Keyword___, load *code_z___, buf *Buf___) (bool, *Errinfo___) {
+func (this *Qv___) z2_var2__(name string, annota *List___, qv  *Qv___, codes *codes___, lvl uint, kw *Keyword___, load *code_z___, buf *Buf___) (bool, *Errinfo___) {
 	if o_liucheng_ {
 		o__('g', "%s", name)
 	}
@@ -84,32 +100,36 @@ func (this *Qv___) z2_var2__(name string, qv  *Qv___, codes *codes___, lvl uint,
 	if qv.args != nil {
 		switch {
 		case strings.HasPrefix(name, Kws_.Args.s):
-			if load != nil {
-				n := name[len(Kws_.Args.s):]
-				from := 0
-				if n != "" {
-					i3, err3 := strconv.Atoi(n)
-					if err3 == nil {
-						from = i3 - 1
-					} else {
-						break
-					}
-				}
-				switch kw {
-				case Kws_.Kaidanyinhao:
-					for i, s := range this.args.A {
-						if i < from {
-							continue
-						}
-						load.args.Add__(s)
-					}
-					exist = true
-				case Kws_.Has:
-					buf.WriteRune('1')
-					exist = true
-					is_to_buf = true
+			n := name[len(Kws_.Args.s):]
+			from := 0
+			if n != "" {
+				i3, err3 := strconv.Atoi(n)
+				if err3 == nil {
+					from = i3 - 1
+				} else {
+					break
 				}
 			}
+			switch kw {
+			case Kws_.Kaidanyinhao:
+				if load != nil {
+					for i := from; i < len(this.args.A); i++ {
+						load.args.Add__(this.args.A[i])
+					}
+				} else {
+					for i := from; i < len(this.args.A); i++ {
+						if i > from {
+							buf.WriteString(" ")
+						}
+						buf.WriteString(this.args.A[i])
+					}
+					is_to_buf = true
+				}
+			case Kws_.Has:
+				buf.WriteRune('1')
+				is_to_buf = true
+			}
+			exist = true
 		case name == Kws_.Arg.s:
 			switch kw {
 			case Kws_.Kaidanyinhao:
@@ -160,15 +180,15 @@ func (this *Qv___) z2_var2__(name string, qv  *Qv___, codes *codes___, lvl uint,
 		}
 	}
 	if !exist {
-		var e *list.Element
+		var e *Em___
 		for {
-			e = qv.vars.find__(name)
+			e = qv.vars.find__(name, annota)
 			if e != nil {
 				break
 			}
 			switch kw {
 			case Kws_.Kaidanyinhao:
-				qv = qv.up_qv
+				qv = qv.up
 			case Kws_.Has:
 				return true, nil
 			case Kws_.Del:
@@ -182,18 +202,27 @@ func (this *Qv___) z2_var2__(name string, qv  *Qv___, codes *codes___, lvl uint,
 			v := var__(e)
 			switch kw {
 			case Kws_.Kaidanyinhao, Kws_.Has:
-				switch v.kw {
+				switch v.Kw {
 				default:
 					switch kw {
 					default:
-						buf.WriteString(v.val)
+						buf.WriteString(v.Val)
 					case Kws_.Has:
 						buf.WriteRune('1')
 					}
 					is_to_buf = true
 				case Kws_.Alias:
-					is_to_buf, err2 = this.z2_var2__(v.val, qv, codes, lvl + 1, kw, load, buf)
+					v.Annota_val.Find__(func (e *Em___) bool {
+						qv, _, _, err2 = this.var_name3__(e.String(), qv, false, false, nil)
+						return err2 != nil
+					})
 					if err2 != nil {
+						err2.Add__(codes.String())
+						return false, err2
+					}
+					is_to_buf, err2 = this.z2_var2__(v.Val, annota, qv, codes, lvl + 1, kw, load, buf)
+					if err2 != nil {
+						err2.Add__(v.Kw)
 						return false, err2
 					}
 				}
@@ -211,9 +240,9 @@ func (this *Qv___) z2_var2__(name string, qv  *Qv___, codes *codes___, lvl uint,
 
 func (this *Qv___) z2_var__(codes *codes___, lvl uint, kw *Keyword___, load *code_z___, buf *Buf___) (bool, *Errinfo___) {
 	buf1 := New_buf__()
-	qv, _, err2 := this.var_name__(codes, lvl, buf1)
+	qv, _, _, err2 := this.var_name__(codes, lvl, buf1)
 	if err2 != nil {
 		return false, err2
 	}
-	return this.z2_var2__(buf1.String(), qv, codes, lvl, kw, load, buf)
+	return this.z2_var2__(buf1.String(), buf1.Annota, qv, codes, lvl, kw, load, buf)
 }

@@ -3,7 +3,6 @@ package zhscript
 import (
 	"io/ioutil"
 	"strings"
-	"container/list"
 	"os"
 )
 
@@ -25,7 +24,7 @@ func Known_path_add__(path string) {
 				break
 			}
 		}
-		if !known_path_.Find__(func(e *list.Element) bool {return e.Value.(string) == dir}) {
+		if !known_path_.Find__(func(e *Em___) bool {return e.Value.(string) == dir}) {
 			if o_path_ {
 				o__(0, "known_path %s|", dir)
 				o_n__()

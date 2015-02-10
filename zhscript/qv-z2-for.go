@@ -22,10 +22,10 @@ func (this *Qv___) z2_for__(codes *codes___, lvl uint, buf *Buf___) (*Goto___, *
 				o__('r', "goto2 %s %s", name, goto2.S)
 			}
 			if goto2.S == "" || name == goto2.S {
-				if goto2.I == G_continue_ {
+				if goto2.Kw == Kws_.Continue {
 					continue
 				}
-				if goto2.I == G_break_ {
+				if goto2.Kw == Kws_.Break {
 					break
 				}
 			}

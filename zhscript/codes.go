@@ -34,16 +34,17 @@ func for_codes__(codes *codes___, f func (code code___) bool) bool {
 }
 
 func for_o_codes__(codes *codes___, lvl uint) {
-	var head2 string
+	var head, head2 string
 	for i := uint(0); i < lvl; i++ {
 		head2 += "|---"
 	}
+	head_kw__ := func(kw *Keyword___) {
+		o__(' ', "%s|%s\n", head, kw)
+	}
 	for _, code := range codes.a {
-		var head string
-		head += head2
+		head = head2
 		kw := code.kw__()
-		o__(' ', "%s", head)
-		o__(' ', "%s", kw.s)
+		o__(' ', "%s%s", head, kw.s)
 		cls_kw := code.cls_kw__()
 		switch(cls_kw) {
 		case Kws_.Kaiyinhao:
@@ -54,18 +55,18 @@ func for_o_codes__(codes *codes___, lvl uint) {
 			o_n__()
 			for_o_codes__(v.logic, lvl + 1)
 			if v.then != nil {
-				o__(' ', "%s|%s\n", head, Kws_.Then)
+				head_kw__(Kws_.Then)
 				for_o_codes__(v.then, lvl + 1)
 			}
 			if v.else1 != nil {
-				o__(' ', "%s|%s\n", head, Kws_.Else)
+				head_kw__(Kws_.Else)
 				for_o_codes__(v.else1, lvl + 1)
 			}
 		case Kws_.Set:
 			v := code.(*code_var___)
 			o_n__()
 			for_o_codes__(v.name, lvl + 1)
-			o__(' ', "%s|%s\n", head, Kws_.Equ)
+			head_kw__(Kws_.Equ)
 			for_o_codes__(v.val, lvl + 1)
 		default:
 			var codes *codes___
@@ -73,7 +74,7 @@ func for_o_codes__(codes *codes___, lvl uint) {
 			case Kws_.Load:
 				code2 := code.(*code_load___)
 				if code2.kw2 != kw {
-					o__(' ', "/%s", code2.kw2)
+					o__(' ', "%s", code2.kw2)
 				}
 				codes = code2.codes
 			case Kws_.Call:

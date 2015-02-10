@@ -24,7 +24,7 @@ func s__(code code___, for_kw *Keyword___) (s string) {
 		return
 	}
 	cls_kw := code.cls_kw__()
-	switch(cls_kw) {		
+	switch(cls_kw) {
 	case Kws_.If:
 		v := code.(*code_logic___)
 		s += v.logic.String()

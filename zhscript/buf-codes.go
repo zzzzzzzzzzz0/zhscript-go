@@ -4,6 +4,7 @@ package zhscript
 type buf_codes___ struct {
 	codes *codes___
 	kw *Keyword___
+	up *buf_codes___
 }
 
 func (this *buf_codes___) add__(c code___) {
@@ -55,7 +56,7 @@ func (this *buf_codes___) to_load__(codes *codes___) {
 	this.clear__()
 }
 
-func (this *buf_codes___) to1__(codes *codes___) {
+func (this *buf_codes___) to__(codes *codes___) {
 	codes.a = append(codes.a, this.codes.a...)
 	this.clear__()
 }

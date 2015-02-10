@@ -39,7 +39,7 @@ func (this *code_z___) z__(qv *Qv___, lvl uint, buf *Buf___) (goto1 *Goto___, er
 	if l == 0 {
 		return
 	}
-	this.args.reset__()
+	this.args.Reset__()
 	var (
 		s string
 		is_to_buf bool
@@ -53,7 +53,7 @@ func (this *code_z___) z__(qv *Qv___, lvl uint, buf *Buf___) (goto1 *Goto___, er
 		if err != nil {
 			return
 		}
-	} 
+	}
 	this.args.Src = s
 	if l > 2 {
 		var (
@@ -66,11 +66,13 @@ func (this *code_z___) z__(qv *Qv___, lvl uint, buf *Buf___) (goto1 *Goto___, er
 			for {
 				if i >= l {
 					b2 = true
+					//b = true
 					break
 				}
 				code := this.codes.a[i]
 				i++
 				if code.kw__() == Kws_.Dunhao {
+					b = true
 					break
 				}
 				buf2 := New_buf__()
@@ -104,12 +106,12 @@ func (this *code_z___) z__(qv *Qv___, lvl uint, buf *Buf___) (goto1 *Goto___, er
 			this.args.Src_type = Src_is_code_
 		case Kws_.Def:
 			this.args.Src_type = Src_is_varname_
-		} 
+		}
 		var qv2 *Qv___
 		qv2, err = New_qv__(&this.args, qv)
 		if err == nil {
 			goto1, err = qv2.Z__(lvl, buf)
-			if goto1 != nil && goto1.I == G_return_ {
+			if goto1 != nil && goto1.Kw == Kws_.Return {
 				goto1 = nil
 			}
 			return

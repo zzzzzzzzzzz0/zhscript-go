@@ -56,6 +56,10 @@ func (this *Qv___) z_code__(code code___, lvl uint, buf *Buf___) (*Goto___, *Err
 
 	buf2 := New_buf__()
 	goto2, err2 := this.z2__(codes2, lvl + 1, buf2)
+	switch(kw) {
+	case Kws_.Kaihuakuohao, Kws_.If:
+		buf.add2__(buf2)
+	}
 	if err2 != nil || goto2 != nil {
 		return goto2, err2
 	}
@@ -65,19 +69,18 @@ func (this *Qv___) z_code__(code code___, lvl uint, buf *Buf___) (*Goto___, *Err
 		o__('g', "%s", Replace_crlf__(s))
 	}
 	switch(kw) {
-	case Kws_.Kaihuakuohao, Kws_.If:
-		//buf.WriteString(s)
-		buf.add2__(buf2)
+	case Kws_.Kaifangkuohao:
+		buf.Annota.PushBack(s)
 		
 	case Kws_.Break:
-		return &Goto___{G_break_, s}, nil
+		return &Goto___{Kws_.Break, s}, nil
 	case Kws_.Continue:
-		return &Goto___{G_continue_, s}, nil
+		return &Goto___{Kws_.Continue, s}, nil
 		
 	case Kws_.Quit:
-		return &Goto___{G_quit_, s}, nil
+		return &Goto___{Kws_.Quit, s}, nil
 	case Kws_.Return:
-		return &Goto___{G_return_, s}, nil
+		return &Goto___{Kws_.Return, s}, nil
 		
 	case Kws_.Eval:
 		err3 := this.z2_eval__(s, buf, codes2)

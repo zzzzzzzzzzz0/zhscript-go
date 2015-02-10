@@ -28,8 +28,11 @@ type Keyword___ struct {
 	mask int
 }
 
-func (this *Keyword___) String() string {
-	return this.s
+func (this *Keyword___) String() (s string) {
+	if this != nil {
+		s = this.s
+	}
+	return
 }
 
 func (this *Keyword___) is__(code []rune, i int) (int, bool) {
@@ -47,7 +50,7 @@ var Kws_ = struct {
 	Kaikuohao, Bikuohao,
 	Kaifangkuohao, Bifangkuohao,
 	Kaihuakuohao, Bihuakuohao,
-	Dunhao,
+	Dunhao, Maohao,
 	
 	Begin_code, End_code,
 	Begin_yuanyang, End_yuanyang,
@@ -60,7 +63,8 @@ var Kws_ = struct {
 	Quit, Return,
 
 	Set, Top, Up, Lock, Equ, Del, Has,
-	Alias, Def,
+	Alias,
+	Def, Noarg,
 
 	Arg, Args, Length,
 	CR, LF,
@@ -83,6 +87,7 @@ var Kws_ = struct {
 	new_kw__("先", m_1_),
 	new_kw__("了", m_1_ | m_ret_lvl_),
 	new_kw__("、", m_dunhao_ | m_ret_lvl_),
+	new_kw__("：", m_dunhao_ | m_ret_lvl_),
 
 	new_kw__("下代码", m_code_),
 	new_kw__("上代码", m_code_),
@@ -118,6 +123,7 @@ var Kws_ = struct {
 	new_kw__("存在", m_1_),
 	new_kw__("别名", m_1_),
 	new_kw__("定义", m_1_),
+	new_kw__("无参", 0),
 
 	new_kw__("参数", 0),
 	new_kw__("参数栈", 0),

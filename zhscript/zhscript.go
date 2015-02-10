@@ -10,7 +10,7 @@ type Zhscript___ struct {
 	Args Args___
 }
 
-func New__(a []string, cc func([]byte) []byte, i interface{}) (z *Zhscript___, err *Errinfo___) {
+func New__(a []string, cc func([]byte, string) []byte, i interface{}) (z *Zhscript___, err *Errinfo___) {
 	z = new(Zhscript___)
 	z.Args.Parse__(a, 1, 0)
 	

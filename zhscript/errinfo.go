@@ -24,7 +24,11 @@ type Errinfo___ struct {
 	s string
 }
 
-func (this *Errinfo___) String() string {
+/*func (this *Errinfo___) String() string {
+	return this.s
+}*/
+
+func (this *Errinfo___) Error() string {
 	return this.s
 }
 

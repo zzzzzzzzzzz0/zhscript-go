@@ -107,7 +107,7 @@ func (this *code_logic___) z__(qv *Qv___, lvl uint) (*codes___, *Errinfo___) {
 func (this *code_logic___) result__(left_kw *Keyword___, s string, is_not bool) bool {
 	b := true
 	if left_kw == nil {
-		b = this.mk_true__(s)
+		b = Bool__(s)
 	} else {
 		var f1, f2 float64
 		var err error
@@ -163,13 +163,11 @@ func (this *code_logic___) result__(left_kw *Keyword___, s string, is_not bool) 
 	return b
 }
 
-func (this *code_logic___) mk_true__(s string) (b bool) {
+func Bool__(s string) (b bool) {
 	switch s {
 	case "", "0", "false":
-		b = false
-	case "1", "true":
-		b = true
 	default:
+		b = true
 	}
 	return
 }

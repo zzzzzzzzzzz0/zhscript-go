@@ -4,11 +4,11 @@ type Qv___ struct {
 	args *Args___
 	vars *vars___
 	codes *codes___
-	up_qv *Qv___
+	up *Qv___
 	Not_my interface{}
 }
 
-var content_convert_ func([]byte) []byte
+var content_convert_ func([]byte, string) []byte
 
 func New_qv__(args *Args___, up_qv *Qv___) (*Qv___, *Errinfo___) {
 	var code []byte
@@ -29,12 +29,12 @@ func New_qv__(args *Args___, up_qv *Qv___) (*Qv___, *Errinfo___) {
 				}
 			}
 			if content_convert_ != nil {
-				code = content_convert_(content)
+				code = content_convert_(content, args.Src)
 			} else {
 				code = content
 			}
 		case Src_is_varname_:
-			v := for_var__(func(name string) bool {
+			v := for_var__(func(name string, is_no_arg bool) bool {
 				if name == args.Src {
 					return true
 				}
@@ -43,7 +43,7 @@ func New_qv__(args *Args___, up_qv *Qv___) (*Qv___, *Errinfo___) {
 			if v == nil {
 				return nil, New_errinfo__(args.Src, Errs_.Exist, Kws_.Def)
 			}
-			code = []byte(v.val)
+			code = []byte(v.Val)
 		default:
 			code = []byte(args.Src)
 		}
@@ -61,7 +61,7 @@ func New_qv__(args *Args___, up_qv *Qv___) (*Qv___, *Errinfo___) {
 	qv := new(Qv___)
 	qv.args = args
 	qv.codes = codes
-	qv.up_qv = up_qv
+	qv.up = up_qv
 	if up_qv != nil {
 		qv.Not_my = up_qv.Not_my
 	}
@@ -73,25 +73,19 @@ func New_qv__(args *Args___, up_qv *Qv___) (*Qv___, *Errinfo___) {
 }
 
 func (this *Qv___) Z__(lvl uint, buf *Buf___) (*Goto___, *Errinfo___) {
-	if o_liucheng_ {
-		//Log__(0, "%b\n", m_all_)
-		
-		/*for i, kw := range all_kw_ {
-			Log__(0, "(%d)%s ", i, kw)
-		}
-		Logn__()*/
-		
+	if o_args_ {
 		switch this.args.Src_type {
 		case Src_is_code_:
+			o__('n', "...")
 		default:
-			o__(0, "%s", this.args.Src)
-			o_n__()
+			o__('n', "%s", this.args.Src)
 		}
+		o_n__()
 		for i, s := range this.args.A {
-			o__(0, "%d) %s", i, s)
+			o__('n', "%d) %s", i, s)
 			o_n__()
 		}
-    }
-    
+	}
+
 	return this.z2__(this.codes, lvl, buf)
 }

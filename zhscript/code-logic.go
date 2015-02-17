@@ -73,7 +73,7 @@ func (this *code_logic___) z2__(codes *codes___, qv *Qv___, lvl, lvl2 uint) (boo
 			if err != nil {
 				return false, err
 			}
-			s += buf.String()
+			s += buf.S__()
 		}
 		if !is_right {
 			if s != "" {

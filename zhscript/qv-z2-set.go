@@ -54,7 +54,7 @@ func (this *Qv___) z2_set__(var1 *code_var___, lvl uint, kw *Keyword___) *Errinf
 }
 
 func set_var__(qv *Qv___, name, buf *Buf___, i int, is_lock, is_no_arg bool, kw *Keyword___) *Errinfo___ {
-	if buf.Annota.Len() > 0 {
+	if name.Annota.Len() > 0 {
 		qv2 := qv
 		for {
 			if qv2 == nil {
@@ -87,7 +87,7 @@ func (this *Qv___) Set_var__(name, val *Buf___, is_lock, is_no_arg bool, kw *Key
 	var2.Is_lock = is_lock
 	var2.Is_no_arg = is_no_arg
 	
-	var2.Val = val.Buffer.String()
+	var2.Val = val.String()
 	var2.Annota = name.Annota
 	var2.Annota_val = val.Annota
 	var2.Kw = kw

@@ -47,7 +47,7 @@ func (this *Buf___) get__(i int) *bytes.Buffer {
 	return this.Buffer
 }
 
-func (this *Buf___) String() (s string) {
+func (this *Buf___) S__() (s string) {
 	for _, buf := range this.A {
 		s += buf.String()
 	}

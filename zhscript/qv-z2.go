@@ -63,7 +63,7 @@ func (this *Qv___) z_code__(code code___, lvl uint, buf *Buf___) (*Goto___, *Err
 	if err2 != nil || goto2 != nil {
 		return goto2, err2
 	}
-	s := buf2.String()
+	s := buf2.S__()
 	if o_liucheng_ {
 		o__('K', "(%d) %s", lvl, kw)
 		o__('g', "%s", Replace_crlf__(s))

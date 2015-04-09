@@ -1,8 +1,6 @@
 package zhscript
 
-import (
-	"github.com/soniah/evaler"
-)
+import "github.com/soniah/evaler"
 
 func (this *Qv___) z2_eval__(s string, buf *Buf___, codes *codes___) *Errinfo___ {
 	res, err := evaler.Eval(s)

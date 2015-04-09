@@ -5,27 +5,47 @@ import (
 	"strconv"
 )
 
-func (this *Qv___) var_name3__(s string, qv1 *Qv___, is_lock1, is_no_arg1 bool, shou *List___) (qv *Qv___, is_lock, is_no_arg bool, err2 *Errinfo___) {
+func var_name3__(s string, qv1 *Qv___, ret2 *Var___, shou *List___) (qv *Qv___, err2 *Errinfo___) {
 	qv = qv1
-	is_lock = is_lock1
-	is_no_arg = is_no_arg1
 	if o_liucheng_ {
 		o__('x', "%s", s)
 	}
 	switch s {
+	case Kws_.Top.s:
+		qv = top_qv_
 	case Kws_.Up.s:
-		qv = qv.up
+		qv = qv.Up
 		if qv == nil {
 			err2 = New_errinfo__(Errs_.Annota)
 			return
 		}
 	case Kws_.Lock.s:
-		is_lock = true
+		if ret2 != nil {
+			ret2.Is_lock = true
+		}
 	case Kws_.Noarg.s:
-		is_no_arg = true
-	case Kws_.Top.s:
-		qv = top_qv_
+		if ret2 != nil {
+			ret2.Is_no_arg = true
+		}
 	default:
+		if strings.HasPrefix(s, Kws_.Qianarg.s) {
+			if ret2 != nil {
+				n := s[len(Kws_.Qianarg.s):]
+				if n == "" {
+					ret2.Qian_arg = 1
+				} else {
+					i3, err3 := strconv.Atoi(n)
+					if err3 == nil {
+						ret2.Qian_arg = i3
+					} else {
+						err2 = New_errinfo__(s, Errs_.Annota)
+						return
+					}
+				}
+			}
+			break
+		}
+		//qv = qv.find2__(s, nil)
 		if shou != nil {
 			shou.PushBack(s)
 		}
@@ -33,19 +53,17 @@ func (this *Qv___) var_name3__(s string, qv1 *Qv___, is_lock1, is_no_arg1 bool, 
 	return
 }
 
-func (this *Qv___) var_name2__(code code___, lvl uint, qv1 *Qv___, is_lock1, is_no_arg1 bool, buf1 *Buf___) (qv *Qv___, is_lock, is_no_arg bool, err2 *Errinfo___) {
+func (this *Qv___) var_name2__(code code___, lvl uint, qv1 *Qv___, ret2 *Var___, buf1 *Buf___) (qv *Qv___, err2 *Errinfo___) {
 	kw := code.kw__()
 	if o_liucheng_ {
 		o__('k', "%s", kw)
 	}
 	qv = qv1
-	is_lock = is_lock1
-	is_no_arg = is_no_arg1
 	switch(kw) {
 	case Kws_.Kaifangkuohao:
 		for _, code2 := range code.(*code_1___).codes.a {
 			if codet, ok := code2.(*code_text___); ok {
-				qv, is_lock, is_no_arg, err2 = this.var_name3__(codet.s, qv, is_lock, is_no_arg, buf1.Annota)
+				qv, err2 = var_name3__(codet.s, qv, ret2, buf1.Annota)
 				if err2 != nil {
 					return
 				}
@@ -61,7 +79,7 @@ func (this *Qv___) var_name2__(code code___, lvl uint, qv1 *Qv___, is_lock1, is_
 		}
 	case Kws_.Kaihuakuohao:
 		for _, code2 := range code.(*code_1___).codes.a {
-			qv, is_lock, is_no_arg, err2 = this.var_name2__(code2, lvl, qv, is_lock, is_no_arg, buf1)
+			qv, err2 = this.var_name2__(code2, lvl, qv, ret2, buf1)
 			if err2 != nil {
 				return
 			}
@@ -77,10 +95,10 @@ func (this *Qv___) var_name2__(code code___, lvl uint, qv1 *Qv___, is_lock1, is_
 	return
 }
 
-func (this *Qv___) var_name__(codes *codes___, lvl uint, buf1 *Buf___) (qv *Qv___, is_lock, is_no_arg bool, err2 *Errinfo___) {
+func (this *Qv___) var_name__(codes *codes___, lvl uint, buf1 *Buf___) (qv *Qv___, err2 *Errinfo___) {
 	qv = this
 	for _, code := range codes.a {
-		qv, is_lock, is_no_arg, err2 = this.var_name2__(code, lvl, qv, is_lock, is_no_arg, buf1)
+		qv, err2 = this.var_name2__(code, lvl, qv, nil, buf1)
 		if err2 != nil {
 			err2.Add__(codes.String())
 			return
@@ -180,15 +198,16 @@ func (this *Qv___) z2_var2__(name string, annota *List___, qv  *Qv___, codes *co
 		}
 	}
 	if !exist {
+		qv = find_qv__(annota, qv)
 		var e *Em___
 		for {
-			e = qv.vars.find__(name, annota)
+			e = qv.Vars.find__(name)
 			if e != nil {
 				break
 			}
 			switch kw {
 			case Kws_.Kaidanyinhao:
-				qv = qv.up
+				qv = qv.Up
 			case Kws_.Has:
 				return true, nil
 			case Kws_.Del:
@@ -199,7 +218,7 @@ func (this *Qv___) z2_var2__(name string, annota *List___, qv  *Qv___, codes *co
 			}
 		}
 		if e != nil {
-			v := var__(e)
+			v := Var__(e)
 			switch kw {
 			case Kws_.Kaidanyinhao, Kws_.Has:
 				switch v.Kw {
@@ -213,7 +232,7 @@ func (this *Qv___) z2_var2__(name string, annota *List___, qv  *Qv___, codes *co
 					is_to_buf = true
 				case Kws_.Alias:
 					v.Annota_val.Find__(func (e *Em___) bool {
-						qv, _, _, err2 = this.var_name3__(e.String(), qv, false, false, nil)
+						qv, err2 = var_name3__(e.String(), qv, nil, nil)
 						return err2 != nil
 					})
 					if err2 != nil {
@@ -227,7 +246,7 @@ func (this *Qv___) z2_var2__(name string, annota *List___, qv  *Qv___, codes *co
 					}
 				}
 			case Kws_.Del:
-				this.vars.del__(e)
+				this.Vars.del__(e)
 			}
 			exist = true
 		}
@@ -240,7 +259,7 @@ func (this *Qv___) z2_var2__(name string, annota *List___, qv  *Qv___, codes *co
 
 func (this *Qv___) z2_var__(codes *codes___, lvl uint, kw *Keyword___, load *code_z___, buf *Buf___) (bool, *Errinfo___) {
 	buf1 := New_buf__()
-	qv, _, _, err2 := this.var_name__(codes, lvl, buf1)
+	qv, err2 := this.var_name__(codes, lvl, buf1)
 	if err2 != nil {
 		return false, err2
 	}

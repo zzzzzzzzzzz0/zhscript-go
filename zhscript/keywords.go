@@ -11,13 +11,12 @@ const (
 	m_kaifangkuohao_
 	m_bifangkuohao_
 	m_huakuohao_
-	m_dunhao_
 	m_logic_
 	m_then_
 	m_equ_
 	m_1_
 	m_ret_lvl_
-	m_all_no_see_ = m_ret_lvl_ + m_dunhao_ + m_logic_ +
+	m_all_no_see_ = m_ret_lvl_ + m_logic_ +
 		m_bidanyinhao_ + m_kaifangkuohao_ + m_bifangkuohao_
 	m_all_ = 0x7fffffff - m_all_no_see_
 )
@@ -64,7 +63,7 @@ var Kws_ = struct {
 
 	Set, Top, Up, Lock, Equ, Del, Has,
 	Alias,
-	Def, Noarg,
+	Def, Noarg, Qianarg,
 
 	Arg, Args, Length,
 	CR, LF,
@@ -86,8 +85,8 @@ var Kws_ = struct {
 	new_kw__("】", m_bifangkuohao_ | m_ret_lvl_),
 	new_kw__("先", m_1_),
 	new_kw__("了", m_1_ | m_ret_lvl_),
-	new_kw__("、", m_dunhao_ | m_ret_lvl_),
-	new_kw__("：", m_dunhao_ | m_ret_lvl_),
+	new_kw__("、", m_1_),
+	new_kw__("：", m_1_),
 
 	new_kw__("下代码", m_code_),
 	new_kw__("上代码", m_code_),
@@ -124,6 +123,7 @@ var Kws_ = struct {
 	new_kw__("别名", m_1_),
 	new_kw__("定义", m_1_),
 	new_kw__("无参", 0),
+	new_kw__("倒挂", 0),
 
 	new_kw__("参数", 0),
 	new_kw__("参数栈", 0),

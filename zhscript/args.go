@@ -1,8 +1,6 @@
 package zhscript
 
-import (
-	"strings"
-)
+import "strings"
 
 var shebang_flag_ = "--" + Kws_.Juhao.s
 const (

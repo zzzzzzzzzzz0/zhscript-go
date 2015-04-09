@@ -1,8 +1,6 @@
 package zhscript
 
-import (
-	"strings"
-)
+import "strings"
 
 type codes___ struct {
 	a []code___
@@ -33,7 +31,7 @@ func for_codes__(codes *codes___, f func (code code___) bool) bool {
 	return false
 }
 
-func for_o_codes__(codes *codes___, lvl uint) {
+func o_codes__(codes *codes___, lvl uint) {
 	var head, head2 string
 	for i := uint(0); i < lvl; i++ {
 		head2 += "|---"
@@ -53,21 +51,21 @@ func for_o_codes__(codes *codes___, lvl uint) {
 		case Kws_.If:
 			v := code.(*code_logic___)
 			o_n__()
-			for_o_codes__(v.logic, lvl + 1)
+			o_codes__(v.logic, lvl + 1)
 			if v.then != nil {
 				head_kw__(Kws_.Then)
-				for_o_codes__(v.then, lvl + 1)
+				o_codes__(v.then, lvl + 1)
 			}
 			if v.else1 != nil {
 				head_kw__(Kws_.Else)
-				for_o_codes__(v.else1, lvl + 1)
+				o_codes__(v.else1, lvl + 1)
 			}
 		case Kws_.Set:
 			v := code.(*code_var___)
 			o_n__()
-			for_o_codes__(v.name, lvl + 1)
+			o_codes__(v.name, lvl + 1)
 			head_kw__(Kws_.Equ)
-			for_o_codes__(v.val, lvl + 1)
+			o_codes__(v.val, lvl + 1)
 		default:
 			var codes *codes___
 			switch(cls_kw) {
@@ -86,7 +84,7 @@ func for_o_codes__(codes *codes___, lvl uint) {
 			}
 			o_n__()
 			if codes != nil {
-				for_o_codes__(codes, lvl + 1)
+				o_codes__(codes, lvl + 1)
 			}
 		}
 	}

@@ -1,8 +1,6 @@
 package zhscript
 
-import (
-	"fmt"
-)
+import "fmt"
 
 func (this *Qv___) z_code__(code code___, lvl uint, buf *Buf___) (*Goto___, *Errinfo___) {
 	kw := code.kw__()

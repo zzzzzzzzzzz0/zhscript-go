@@ -16,7 +16,7 @@ var Errs_ = Errs___ {
 	&Err___{"期待的关键字"},
 	&Err___{"调用失败"},
 	&Err___{"不合适"},
-	&Err___{"定义名不能为空"},
+	&Err___{"定义名无法使用"},
 }
 
 type Errinfo___ struct {
@@ -33,7 +33,7 @@ func (this *Errinfo___) Error() string {
 }
 
 func (this *Errinfo___) Add__(i interface{}) {
-	if s, ok := i.(string); ok && s != "" {
+	if s, ok := i.(string); ok {
 		this.s += Kws_.Kaiyinhao.s + s + Kws_.Biyinhao.s
 		return
 	}

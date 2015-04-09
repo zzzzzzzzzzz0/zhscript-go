@@ -1,8 +1,6 @@
 package zhscript
 
-import (
-	"strconv"
-)
+import "strconv"
 
 type code_logic___ struct {
 	code_i___

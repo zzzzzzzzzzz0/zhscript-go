@@ -1,8 +1,6 @@
 package zhscript
 
-import (
-	"reflect"
-)
+import "reflect"
 
 type code_call___ struct {
 	code_z___
@@ -37,14 +35,27 @@ func call__(args *Args___, qv *Qv___, buf2 *Buf___) (goto1 *Goto___, err1 *Errin
 			err1 = New_errinfo__(err.(string), Errs_.Fail)
 		}
 	}()
+	i2 := 0
 	for i, v := range m.Call(a) {
+		v2 := v.Interface()
 		switch i {
 		case 0:
-			goto1 = v.Interface().(*Goto___)
+			goto1 = v2.(*Goto___)
 		case 1:
-			err1 = v.Interface().(*Errinfo___)
+			err1 = v2.(*Errinfo___)
 		default:
-			buf2.get__(i - 2).WriteString(v.String())
+			switch reflect.TypeOf(v2).Kind() {
+			case reflect.String:
+				buf2.get__(i2).WriteString(v.String())
+				i2++
+			case reflect.Slice:
+				if s2, ok2 := v2.([]string); ok2 {
+					for _, s := range s2 {
+						buf2.get__(i2).WriteString(s)
+						i2++
+					}
+				}
+			}
 		}
 	}
 	return

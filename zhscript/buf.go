@@ -1,8 +1,6 @@
 package zhscript
 
-import (
-	"bytes"
-)
+import "bytes"
 
 type Buf___ struct {
 	*bytes.Buffer

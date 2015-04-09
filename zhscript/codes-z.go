@@ -1,6 +1,6 @@
 package zhscript
 
-func (this *codes___) z__(code []rune, up_qv *Qv___, from, to, end_mask, mask, lvl int, thiz *buf_codes___) (int, *Keyword___, *Errinfo___) {
+func (this *codes___) z__(code []rune, up_qv *Qv___, from, to, end_mask, mask, lvl int, use_def bool, thiz *buf_codes___) (int, *Keyword___, *Errinfo___) {
 	if o_liucheng2_ {
 		o_n__()
 		o__('n', "(%d)%d-%d,%b", lvl, from, to, end_mask)
@@ -111,6 +111,10 @@ func (this *codes___) z__(code []rune, up_qv *Qv___, from, to, end_mask, mask, l
 					mask = mask_bak.Back_i__()
 				}
 				continue
+			case Kws_.Dunhao, Kws_.Maohao:
+				thiz.add_text__(buf)
+				thiz.separ__()
+				continue
 			case Kws_.LF:
 				buf.WriteRune('\n')
 				continue
@@ -144,15 +148,12 @@ func (this *codes___) z__(code []rune, up_qv *Qv___, from, to, end_mask, mask, l
 		}
 		var thiz2 *buf_codes___
 		if !ok {
-			if yinhaonei == 0 && yuanyangnei == 0 && code_nei == 0 && (end_mask & m_bidanyinhao_ == 0) {
+			if use_def && yinhaonei == 0 && yuanyangnei == 0 && code_nei == 0 && (end_mask & m_bidanyinhao_ == 0) {
 				var is_no_arg bool
-				i, kw, thiz2, is_no_arg, ok = is_def__(code, up_qv, i, thiz)
-				if ok {
-					thiz.add_text__(buf)
-					if is_no_arg {
-						thiz2.to_load__(thiz.add_load__(kw, thiz2.kw))
-						continue
-					}
+				i, kw, thiz2, is_no_arg, ok = is_def__(code, up_qv, i, buf, thiz)
+				if ok && is_no_arg {
+					thiz2.to_load__(thiz.add_load__(kw, thiz2.kw))
+					continue
 				}
 			}
 		}
@@ -166,6 +167,7 @@ func (this *codes___) z__(code []rune, up_qv *Qv___, from, to, end_mask, mask, l
 					thiz2 = new_buf_codes__(kw)
 				}
 				from2 := i
+				use_def2 := use_def
 				var (
 					i2 int
 					kw2 *Keyword___
@@ -186,14 +188,13 @@ func (this *codes___) z__(code []rune, up_qv *Qv___, from, to, end_mask, mask, l
 				case Kws_.Has:
 					end_mask2 |= m_kaifangkuohao_
 				case Kws_.Set, Kws_.Alias, Kws_.Def:
-					end_mask2 |= m_equ_ | m_kaifangkuohao_ | m_dunhao_
+					end_mask2 |= m_equ_ | m_kaifangkuohao_
+					use_def2 = false
 					var2 = new_var__(kw)
-				case Kws_.Call, Kws_.Load, Kws_.Interp:
-					end_mask2 |= m_dunhao_
 				}
 				thiz2.up = thiz
 				for {
-					i2, kw2, err2 = this.z__(code, up_qv, from2, to, end_mask2, mask | end_mask2, lvl + 1, thiz2)
+					i2, kw2, err2 = this.z__(code, up_qv, from2, to, end_mask2, mask | end_mask2, lvl + 1, use_def2, thiz2)
 					if err2 != nil {
 						if o_liucheng2_ {
 							o__('r', "err2 (%d)%s", lvl, err2)
@@ -207,8 +208,6 @@ func (this *codes___) z__(code []rune, up_qv *Qv___, from, to, end_mask, mask, l
 					b := false
 					switch kw2 {
 					case nil, Kws_.Kaihuakuohao, Kws_.Kaifangkuohao:
-					case Kws_.Dunhao, Kws_.Maohao:
-						thiz2.separ__()
 					default:
 						switch {
 						case kw2.is2__(m_logic_):
@@ -264,6 +263,7 @@ func (this *codes___) z__(code []rune, up_qv *Qv___, from, to, end_mask, mask, l
 							if var2.val == nil {
 								var2.val = new(codes___)
 							}
+							use_def2 = use_def
 						default:
 							b = true
 						}
@@ -356,11 +356,11 @@ func (this *codes___) z3__(thiz, thiz2 *buf_codes___, if2 *code_logic___, var2 *
 
 func (this *codes___) z2__(code []rune, up_qv *Qv___) *Errinfo___ {
 	buf := new_buf_codes__(nil)
-	_, _, err := this.z__(code, up_qv, 0, len(code), 0, m_all_, 0, buf)
+	_, _, err := this.z__(code, up_qv, 0, len(code), 0, m_all_, 0, true, buf)
 	if err == nil {
 		buf.to__(this)
 		if o_tree_ {
-			for_o_codes__(this, 0)
+			o_codes__(this, 0)
 		}
 	}
 	return err

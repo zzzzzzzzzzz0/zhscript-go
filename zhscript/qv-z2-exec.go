@@ -15,10 +15,11 @@ func (this *Qv___) z2_exec__(s string, buf *Buf___) {
 	if err := c.Wait(); err != nil {
 		if exiterr, ok := err.(*exec.ExitError); ok {
 			if status, ok := exiterr.Sys().(syscall.WaitStatus); ok {
-				buf.WriteString(strconv.Itoa(status.ExitStatus()))
+				buf.get__(0).WriteString(strconv.Itoa(status.ExitStatus()))
 			}
 		} else {
 			buf.get__(1).WriteString(err.Error())
 		}
 	}
+	buf.get__(2).WriteString(strconv.Itoa(c.Process.Pid))
 }

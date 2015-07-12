@@ -4,7 +4,7 @@ type code_z___ struct {
 	code_i___
 	codes *codes___
 	args Args___
-	kw2 *Keyword___
+	kw11 *Keyword___
 }
 
 func (this *code_z___) z2__(code code___, qv *Qv___, lvl uint, buf *Buf___) (s string, is_to_buf bool, err *Errinfo___) {
@@ -44,9 +44,9 @@ func (this *code_z___) z__(qv *Qv___, lvl uint, buf *Buf___) (goto1 *Goto___, er
 		s string
 		is_to_buf bool
 	)
-	switch this.kw2 {
-	case Kws_.Def:
-		s = s__(this.codes.a[0], this.kw2)
+	switch this.args.Src_type {
+	case Src_is_varname_:
+		s = s2__(this.codes.a[0], this.kw11)
 	default:
 		buf2 := New_buf__()
 		s, is_to_buf, err = this.z2__(this.codes.a[0], qv, lvl, buf2)
@@ -57,22 +57,25 @@ func (this *code_z___) z__(qv *Qv___, lvl uint, buf *Buf___) (goto1 *Goto___, er
 	this.args.Src = s
 	if l > 2 {
 		var (
-			b2 bool
+			is_eoc bool
 			s2 string
 		)
-		for i := 2; !b2; {
-			s = ""
-			b := false
+		for i := 2; !is_eoc; {
+			val := &Val___{}
+			var has_to_buf, has_noto_buf bool
 			for {
 				if i >= l {
-					b2 = true
-					//b = true
+					is_eoc = true
+					if !has_to_buf && has_noto_buf {
+					} else {
+						has_to_buf = true
+					}
 					break
 				}
 				code := this.codes.a[i]
 				i++
 				if code.kw__() == Kws_.Dunhao {
-					b = true
+					has_to_buf = true
 					break
 				}
 				buf2 := New_buf__()
@@ -81,17 +84,19 @@ func (this *code_z___) z__(qv *Qv___, lvl uint, buf *Buf___) (goto1 *Goto___, er
 					return
 				}
 				if !is_to_buf {
+					has_noto_buf = true
 					continue
 				}
-				s += s2
-				b = true
+				val.S += s2
+				val.copy_i__(buf2.cur.Val)
+				has_to_buf = true
 			}
-			if b {
-				this.args.Add__(s)
+			if has_to_buf {
+				this.args.Add2__(val)
 			}
 		}
 	}
-	switch(this.kw) {
+	switch this.kw {
 	case Kws_.Call:
 		goto1, err = call__(&this.args, qv, buf)
 		if err != nil {
@@ -99,19 +104,11 @@ func (this *code_z___) z__(qv *Qv___, lvl uint, buf *Buf___) (goto1 *Goto___, er
 			return
 		}
 	default:
-		switch this.kw2 {
-		case Kws_.Load:
-			this.args.Src_type = Src_is_file_
-		case Kws_.Interp:
-			this.args.Src_type = Src_is_code_
-		case Kws_.Def:
-			this.args.Src_type = Src_is_varname_
-		}
 		var qv2 *Qv___
 		qv2, err = New_qv__(&this.args, qv)
 		if err == nil {
 			goto1, err = qv2.Z__(lvl, buf)
-			if goto1 != nil && goto1.Kw == Kws_.Return {
+			if goto1 != nil && goto1.Kw == Kws_.Return && !qv2.is_through {
 				goto1 = nil
 			}
 			return

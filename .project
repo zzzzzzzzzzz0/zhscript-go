@@ -6,12 +6,16 @@
 	</projects>
 	<buildSpec>
 		<buildCommand>
-			<name>com.googlecode.goclipse.goBuilder</name>
+			<name>org.eclipse.ui.externaltools.ExternalToolBuilder</name>
+			<triggers>auto,</triggers>
 			<arguments>
+				<dictionary>
+					<key>LaunchConfigHandle</key>
+					<value>&lt;project&gt;/.externalToolBuilders/zhscript-go build-references.launch</value>
+				</dictionary>
 			</arguments>
 		</buildCommand>
 	</buildSpec>
 	<natures>
-		<nature>com.googlecode.goclipse.core.goNature</nature>
 	</natures>
 </projectDescription>

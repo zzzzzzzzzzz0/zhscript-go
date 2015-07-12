@@ -4,10 +4,13 @@ import (
 	"os/exec"
 	"strconv"
 	"syscall"
+	"os"
 )
 
 func (this *Qv___) z2_exec__(s string, buf *Buf___) {
 	c := exec.Command("/bin/sh", "-c", s)
+	c.Stdout = os.Stdout
+	c.Stderr = os.Stderr
 	err := c.Start()
 	if err != nil {
 		buf.get__(1).WriteString(err.Error())

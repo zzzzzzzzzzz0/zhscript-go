@@ -23,8 +23,9 @@ func (this *code_logic___) z2__(codes *codes___, qv *Qv___, lvl, lvl2 uint) (boo
 			o__('n', "if(%d)%d)%d)%s", lvl, lvl2, i, kw)
 			o_n__()
 		}
-		b := true
 		if kw.is2__(m_logic_) {
+			b := true
+			has_result = false
 			switch kw {
 			case Kws_.Dengyu, Kws_.Notdengyu, Kws_.Xiaoyudengyu, Kws_.Xiaoyu, Kws_.Dayudengyu, Kws_.Dayu:
 				left_kw = kw
@@ -55,6 +56,14 @@ func (this *code_logic___) z2__(codes *codes___, qv *Qv___, lvl, lvl2 uint) (boo
 			}
 			break
 		}
+		if kw == Kws_.Dunhao {
+			result = this.result__(left_kw, s, is_not)
+			has_result = true
+			if result {
+				break
+			}
+			s = ""
+		}
 		if kw == Kws_.Kaihuakuohao {
 			var err *Errinfo___
 			result, err = this.z2__(code.(*code_1___).codes, qv, lvl, lvl2 + 1)
@@ -74,9 +83,7 @@ func (this *code_logic___) z2__(codes *codes___, qv *Qv___, lvl, lvl2 uint) (boo
 			s += buf.S__()
 		}
 		if !is_right {
-			if s != "" {
-				this.left_val = s
-			}
+			this.left_val = s
 		}
 		has_result = false
 	}
@@ -156,7 +163,11 @@ func (this *code_logic___) result__(left_kw *Keyword___, s string, is_not bool) 
 		b = !b
 	}
 	if o_liucheng_ {
-		o__('K', "%s %v %s %v", this.left_val, left_kw, s, b)
+		if left_kw == nil {
+			o__('K', "%s=%v", s, b)
+		} else {
+			o__('K', "%s %v %s=%v", this.left_val, left_kw, s, b)
+		}
 	}
 	return b
 }

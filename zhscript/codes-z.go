@@ -1,6 +1,6 @@
 package zhscript
 
-func (this *codes___) z__(code []rune, up_qv *Qv___, from, to, end_mask, mask, lvl int, use_def bool, thiz *buf_codes___) (int, *Keyword___, *Errinfo___) {
+func (this *codes___) z__(code []rune, qv *Qv___, from, to, end_mask, mask, lvl, lvl2 int, use_def bool, thiz *buf_codes___) (int, *Keyword___, *Errinfo___) {
 	if o_liucheng2_ {
 		o_n__()
 		o__('n', "(%d)%d-%d,%b", lvl, from, to, end_mask)
@@ -84,7 +84,7 @@ func (this *codes___) z__(code []rune, up_qv *Qv___, from, to, end_mask, mask, l
 			case Kws_.Begin_code:
 				if code_nei == 0 {
 					mask_bak.PushBack(mask)
-					mask = m_code_ | m_yuanyang_ | m_kuohao_
+					mask = m_code_ | m_yuanyang_ | m_kuohao_ //| m_yinhao_
 				} else {
 					buf.WriteString(kw.s)
 				}
@@ -146,13 +146,19 @@ func (this *codes___) z__(code []rune, up_qv *Qv___, from, to, end_mask, mask, l
 			}
 			continue
 		}
-		var thiz2 *buf_codes___
+		var (
+			thiz2 *buf_codes___
+			err2 *Errinfo___
+		)
 		if !ok {
 			if use_def && yinhaonei == 0 && yuanyangnei == 0 && code_nei == 0 && (end_mask & m_bidanyinhao_ == 0) {
 				var is_no_arg bool
-				i, kw, thiz2, is_no_arg, ok = is_def__(code, up_qv, i, buf, thiz)
+				i, kw, thiz2, is_no_arg, ok, err2 = is_def__(code, qv, i, buf, thiz)
+				if err2 != nil {
+					return i, kw, err2
+				}
 				if ok && is_no_arg {
-					thiz2.to_load__(thiz.add_load__(kw, thiz2.kw))
+					thiz2.to_load__(thiz.add_load__(kw, thiz2.kw10, thiz2.names))
 					continue
 				}
 			}
@@ -160,7 +166,7 @@ func (this *codes___) z__(code []rune, up_qv *Qv___, from, to, end_mask, mask, l
 		if ok {
 			switch {
 			case kw.is2__(m_juhao_):
-				break
+				thiz.add_1__(Kws_.Juhao)
 			default:
 				end_mask2 := m_juhao_
 				if thiz2 == nil {
@@ -171,7 +177,6 @@ func (this *codes___) z__(code []rune, up_qv *Qv___, from, to, end_mask, mask, l
 				var (
 					i2 int
 					kw2 *Keyword___
-					err2 *Errinfo___
 					if2 *code_logic___
 					var2 *code_var___
 				)
@@ -185,7 +190,7 @@ func (this *codes___) z__(code []rune, up_qv *Qv___, from, to, end_mask, mask, l
 				case Kws_.If:
 					end_mask2 |= m_logic_ | m_then_
 					if2 = new_logic__()
-				case Kws_.Has:
+				case Kws_.Has, Kws_.Del:
 					end_mask2 |= m_kaifangkuohao_
 				case Kws_.Set, Kws_.Alias, Kws_.Def:
 					end_mask2 |= m_equ_ | m_kaifangkuohao_
@@ -193,8 +198,11 @@ func (this *codes___) z__(code []rune, up_qv *Qv___, from, to, end_mask, mask, l
 					var2 = new_var__(kw)
 				}
 				thiz2.up = thiz
+				if end_mask & m_logic_ != 0 {
+					lvl2 = lvl - 1
+				}
 				for {
-					i2, kw2, err2 = this.z__(code, up_qv, from2, to, end_mask2, mask | end_mask2, lvl + 1, use_def2, thiz2)
+					i2, kw2, err2 = this.z__(code, qv, from2, to, end_mask2, mask | end_mask2, lvl + 1, lvl2, use_def2, thiz2)
 					if err2 != nil {
 						if o_liucheng2_ {
 							o__('r', "err2 (%d)%s", lvl, err2)
@@ -204,6 +212,13 @@ func (this *codes___) z__(code []rune, up_qv *Qv___, from, to, end_mask, mask, l
 					if o_liucheng2_ {
 						o__('K', "(%d)%d %s %s", lvl, i2, kw, kw2)
 						//o__('K', " %p/%p", thiz2.codes, thiz.codes)
+					}
+					if kw2 != nil && kw2.is2__(m_logic_) && if2 == nil && lvl > lvl2 && kw != Kws_.Kaihuakuohao {
+						err3 := this.z3__(thiz, thiz2, if2, var2, kw, i, i2, code)
+						if err3 != nil {
+							return i, kw2, err3
+						}
+						return i2, kw2, nil
 					}
 					b := false
 					switch kw2 {
@@ -226,13 +241,13 @@ func (this *codes___) z__(code []rune, up_qv *Qv___, from, to, end_mask, mask, l
 								}
 								return i, kw2, new_errinfo__(Errs_.Keyword, "", code, i, i2, Kws_.If, nil)
 							}
-							switch thiz2.kw {
+							switch thiz2.kw10 {
 							case Kws_.Then:
 								thiz2.to__(if2.then)
 							case Kws_.Else:
 								thiz2.to__(if2.else1)
 							default:
-								thiz2.to__(if2.logic)
+								thiz2.to_logic__(if2.logic)
 							}
 							is_then := kw2 == Kws_.Then || kw == Kws_.Then
 							end_mask2 &= ^m_logic_
@@ -240,12 +255,12 @@ func (this *codes___) z__(code []rune, up_qv *Qv___, from, to, end_mask, mask, l
 								if if2.then == nil {
 									if2.then = new(codes___)
 								}
-								thiz2.kw = Kws_.Then
+								thiz2.kw10 = Kws_.Then
 							} else {
 								if if2.else1 == nil {
 									if2.else1 = new(codes___)
 								}
-								thiz2.kw = Kws_.Else
+								thiz2.kw10 = Kws_.Else
 							}
 						case kw2 == Kws_.Equ || kw == Kws_.Equ:
 							if var2 == nil {
@@ -258,7 +273,7 @@ func (this *codes___) z__(code []rune, up_qv *Qv___, from, to, end_mask, mask, l
 								return i, kw2, new_errinfo__(Errs_.Keyword, "", code, i, i2, Kws_.Set, nil)
 							}
 							thiz2.to__(var2.name)
-							thiz2.kw = Kws_.Equ
+							thiz2.kw10 = Kws_.Equ
 							//end_mask2 &= ^m_kaifangkuohao_
 							if var2.val == nil {
 								var2.val = new(codes___)
@@ -320,7 +335,7 @@ func (this *codes___) z3__(thiz, thiz2 *buf_codes___, if2 *code_logic___, var2 *
 	}
 	switch kw {
 	case Kws_.If:
-		switch thiz2.kw {
+		switch thiz2.kw10 {
 		case Kws_.Then:
 			thiz2.to__(if2.then)
 		case Kws_.Else:
@@ -336,7 +351,7 @@ func (this *codes___) z3__(thiz, thiz2 *buf_codes___, if2 *code_logic___, var2 *
 		thiz2.to__(var2.val)
 		thiz.add__(var2)
 	case Kws_.Interp, Kws_.Load:
-		thiz2.to_load__(thiz.add_load__(kw, thiz2.kw))
+		thiz2.to_load__(thiz.add_load__(kw, thiz2.kw10, thiz2.names))
 	case Kws_.Call:
 		thiz2.to_load__(thiz.add_call__(kw))
 	default:
@@ -354,9 +369,9 @@ func (this *codes___) z3__(thiz, thiz2 *buf_codes___, if2 *code_logic___, var2 *
 	return nil
 }
 
-func (this *codes___) z2__(code []rune, up_qv *Qv___) *Errinfo___ {
+func (this *codes___) z2__(code []rune, qv *Qv___) *Errinfo___ {
 	buf := new_buf_codes__(nil)
-	_, _, err := this.z__(code, up_qv, 0, len(code), 0, m_all_, 0, true, buf)
+	_, _, err := this.z__(code, qv, 0, len(code), 0, m_all_, 0, 0, true, buf)
 	if err == nil {
 		buf.to__(this)
 		if o_tree_ {

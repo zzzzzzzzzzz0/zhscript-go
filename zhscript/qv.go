@@ -1,42 +1,38 @@
 package zhscript
 
 type Qv___ struct {
-	args *Args___
+	Args *Args___
 	Vars *Vars___
-	Annota *List___
+	Annota *Strings___
 	codes *codes___
 	Up *Qv___
+	is_through bool
 	Not_my interface{}
 }
 
 func (this *Qv___) find2__(s string, on_no func(string)) *Qv___ {
-	b := true
-	for ea := this.Annota.Front(); ea != nil; ea = ea.Next() {
-		if ea.Value.(string) == s {
-			b = false
-			break
+	for _, s2 := range this.Annota.A {
+		if s2 == s {
+			return this
 		}
 	}
-	if b {
-		if on_no != nil {
-			on_no(s)
-		}
-		return nil
+	if on_no != nil {
+		on_no(s)
 	}
-	return this
+	return nil
 }
 
-func (this *Qv___) find__(annota *List___, on_no func(string)) *Qv___ {
-	for ea2 := annota.Front(); ea2 != nil; ea2 = ea2.Next() {
-		if this.find2__(ea2.Value.(string), on_no) == nil {
+func (this *Qv___) find__(annota *Strings___, on_no func(string)) *Qv___ {
+	for _, s := range annota.A {
+		if this.find2__(s, on_no) == nil {
 			return nil
 		}
 	}
 	return this
 }
 
-func find_qv__(annota *List___, qv *Qv___) *Qv___ {
-	if annota.Len() > 0 {
+func find_qv__(annota *Strings___, qv *Qv___) *Qv___ {
+	if annota.Len__() > 0 {
 		qv2 := qv
 		for {
 			if qv2 == nil {
@@ -54,14 +50,16 @@ func find_qv__(annota *List___, qv *Qv___) *Qv___ {
 
 func (this *Qv___) Z__(lvl uint, buf *Buf___) (*Goto___, *Errinfo___) {
 	if o_args_ {
-		switch this.args.Src_type {
+		switch this.Args.Src_type {
 		case Src_is_code_:
 			o__('n', "...")
 		default:
-			o__('n', "%s", this.args.Src)
+			o__('n', "%s", this.Args.Src)
 		}
 		o_n__()
-		for i, s := range this.args.A {
+		o__('n', "%v %v", this.Args.Src2, this.is_through)
+		o_n__()
+		for i, s := range this.Args.A {
 			o__('n', "%d) %s", i, s)
 			o_n__()
 		}
@@ -73,7 +71,10 @@ func (this *Qv___) Z__(lvl uint, buf *Buf___) (*Goto___, *Errinfo___) {
 var content_convert_ func([]byte, string) []byte
 
 func New_qv__(args *Args___, up_qv *Qv___) (*Qv___, *Errinfo___) {
-	var code []byte
+	var (
+		code []byte
+		is_through bool
+	)
 	if args != nil {
 		switch args.Src_type {
 		case Src_is_file_:
@@ -95,6 +96,7 @@ func New_qv__(args *Args___, up_qv *Qv___) (*Qv___, *Errinfo___) {
 			} else {
 				code = content
 			}
+			args.Src2 = args.Src
 		case Src_is_varname_:
 			v := for_var__(func(v *Var___) bool {
 				if v.Name == args.Src {
@@ -105,7 +107,9 @@ func New_qv__(args *Args___, up_qv *Qv___) (*Qv___, *Errinfo___) {
 			if v == nil {
 				return nil, New_errinfo__(args.Src, Errs_.Exist, Kws_.Def)
 			}
-			code = []byte(v.Val)
+			code = []byte(v.Val.S)
+			args.Src2 = args.Src
+			is_through = v.Is_through
 		default:
 			code = []byte(args.Src)
 		}
@@ -121,16 +125,32 @@ func New_qv__(args *Args___, up_qv *Qv___) (*Qv___, *Errinfo___) {
 	}
 	
 	qv := new(Qv___)
-	qv.args = args
+	qv.Args = args
 	qv.codes = codes
 	qv.Up = up_qv
+	qv.is_through = is_through
 	if up_qv != nil {
 		qv.Not_my = up_qv.Not_my
 	}
-	qv.Annota = new(List___)
+	qv.Annota = New_strings__()
 	
 	qv.Vars = new(Vars___)
 	qv.Vars.init__()
+	if args != nil {
+		switch args.Src_type {
+		case Src_is_varname_:
+			for i, s := range args.Names {
+				if i >= len(args.A) {
+					break
+				}
+				name := New_buf__()
+				name.WriteString(s)
+				val := New_buf__()
+				val.WriteString(args.A[i].S)
+				qv.Set_var__(name, val, nil, Kws_.Set)
+			}
+		}
+	}
 	
 	return qv, nil
 }

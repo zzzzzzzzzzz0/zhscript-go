@@ -19,7 +19,7 @@ func New__(a []string, cc func([]byte, string) []byte, i interface{}) (z *Zhscri
 	
 	file, _ := exec.LookPath(a[0])
 	path, _ := filepath.Abs(file)
-    Known_path_add__(path)
+	Known_path_add__(path)
 	
 	if top_qv_ == nil {
 		top_qv_, err = New_qv__(nil, nil)

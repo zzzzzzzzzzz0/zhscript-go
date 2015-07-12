@@ -32,18 +32,32 @@ func (this *Errinfo___) Error() string {
 	return this.s
 }
 
+func (this *Errinfo___) yin__(s string) {
+	this.s += Kws_.Kaiyinhao.s + s + Kws_.Biyinhao.s
+}
+
 func (this *Errinfo___) Add__(i interface{}) {
-	if s, ok := i.(string); ok {
-		this.s += Kws_.Kaiyinhao.s + s + Kws_.Biyinhao.s
-		return
-	}
 	if err, ok := i.(*Err___); ok {
 		this.err = err
 		this.s += err.s
 		return
 	}
 	if kw, ok := i.(*Keyword___); ok && kw != nil {
-		this.s += Kws_.Kaiyinhao.s + kw.s + Kws_.Biyinhao.s
+		this.yin__(kw.s)
+		return
+	}
+	if s, ok := i.(string); ok {
+		this.yin__(s)
+		return
+	}
+	if s, ok := i.([]string); ok {
+		for _, s1 := range s {
+			this.yin__(s1)
+		}
+		return
+	}
+	if err, ok := i.(error); ok {
+		this.yin__(err.Error())
 		return
 	}
 }

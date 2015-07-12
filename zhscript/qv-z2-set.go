@@ -29,35 +29,51 @@ func (this *Qv___) z2_set__(var1 *code_var___, lvl uint, kw *Keyword___) *Errinf
 	i := 0
 	qv := this
 	ret2 := new(Var___)
+	name2 := name
+	add_def_arg := func() bool {
+		if kw == Kws_.Def {
+			if i > 0 {
+				ret2.argnames_add__(name2.S__())
+			}
+			return true
+		}
+		return false
+	}
 	for _, code := range codes.a {
 		switch code.kw__() {
 		case Kws_.Dunhao:
-			err2 = set_var__(qv, name, buf, i, ret2, kw)
-			if err2 != nil {
-				return err2
+			if add_def_arg() {
+				name2 = New_buf__()
+			} else {
+				err2 = set_var__(qv, name2, buf, i, ret2, kw)
+				if err2 != nil {
+					return err2
+				}
+				ret2 = new(Var___)
+				qv = this
+				name2 = New_buf__()
+				name = name2
 			}
-			name = New_buf__()
-			qv = this
-			ret2 = new(Var___)
 			i++
 			continue
 		}
-		qv, err2 = this.var_name2__(code, lvl, qv, ret2, name)
+		qv, err2 = this.var_name2__(code, lvl, qv, ret2, name2)
 		if err2 != nil {
 			return err2
 		}
 	}
+	add_def_arg()
 	return set_var__(qv, name, buf, i, ret2, kw)
 }
 
 func set_var__(qv *Qv___, name, buf *Buf___, i int, set2 *Var___, kw *Keyword___) *Errinfo___ {
-	qv = find_qv__(name.Annota, qv)
+	qv = find_qv__(name.cur.Annota, qv)
 	return qv.set_var2__(name, buf, i, set2, kw)
 }
 
 func (this *Qv___) set_var2__(name, buf2 *Buf___, i int, set2 *Var___, kw *Keyword___) *Errinfo___ {
-	if buf2.kw == Kws_.Kaiyinhao && i >= len(buf2.A) {
-		i = len(buf2.A) - 1
+	if buf2.kw == Kws_.Kaiyinhao && i >= len(buf2.a) {
+		i = len(buf2.a) - 1
 	}
 	buf2.get__(i)
 	return this.Set_var__(name, buf2, set2, kw)
@@ -88,16 +104,19 @@ func (this *Qv___) Set_var__(name, val *Buf___, set2 *Var___, kw *Keyword___) (e
 		err = New_errinfo__(Errs_.Lock, name)
 		return
 	}
+	var2.Val = &Val___{S:val.String()}
+	var2.Val.copy_i__(val.cur.Val)
+	var2.Annota_val = val.cur.Annota
+	var2.Kw = kw
 	if set2 != nil {
 		var2.Is_lock = set2.Is_lock
 		var2.Is_no_arg = set2.Is_no_arg
 		var2.Qian_arg = set2.Qian_arg
+		var2.Is_through = set2.Is_through
+		var2.Argnames = set2.Argnames
 	}
-	var2.Val = val.String()
-	var2.Annota_val = val.Annota
-	var2.Kw = kw
-	this.find__(name.Annota, func(s string) {
-		this.Annota.PushBack(s)
+	this.find__(name.cur.Annota, func(s string) {
+		this.Annota.Add__(s)
 	})
 	return
 }

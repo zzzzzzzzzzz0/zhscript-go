@@ -5,9 +5,13 @@ type code___ interface {
 	cls_kw__() *Keyword___
 }
 
-func s__(code code___, for_kw *Keyword___) (s string) {
+func s__(code code___) (string) {
+	return s2__(code, nil)
+}
+
+func s2__(code code___, for_kw *Keyword___) (s string) {
 	kw := code.kw__()
-	switch(kw) {
+	switch kw {
 	case Kws_.Kaiyinhao:
 		v := code.(*code_text___)
 		switch for_kw {
@@ -19,12 +23,8 @@ func s__(code code___, for_kw *Keyword___) (s string) {
 		return
 	}
 	s += kw.s
-	switch {
-	case kw.is2__(m_logic_), kw == Kws_.Dunhao:
-		return
-	}
 	cls_kw := code.cls_kw__()
-	switch(cls_kw) {
+	switch cls_kw {
 	case Kws_.If:
 		v := code.(*code_logic___)
 		s += v.logic.String()
@@ -44,13 +44,16 @@ func s__(code code___, for_kw *Keyword___) (s string) {
 	case Kws_.Call:
 		s += code.(*code_call___).codes.String()
 	default:
-		v := code.(*code_1___)
-		s += v.codes.String()
-		if v.kw2 != nil {
-			s += v.kw2.s
+		if v, ok := code.(*code_1___); ok {
+			s += v.codes.String()
+			if v.kw2 != nil {
+				s += v.kw2.s
+			}
+		} else {
+			return
 		}
 	}
-	switch(kw) {
+	switch kw {
 	case Kws_.Kaihuakuohao, Kws_.Kaidanyinhao, Kws_.Kaifangkuohao:
 		return
 	}

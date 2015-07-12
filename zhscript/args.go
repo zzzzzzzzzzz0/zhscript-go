@@ -10,25 +10,54 @@ const (
 )
 
 type Args___ struct {
-	Src string
+	Src, Src2 string
 	Src_type int
-	A []string
+	A []*Val___
+	Names []string
+
 	is_mk_all bool
 	all string
 }
 
 func (this *Args___) Reset__() {
-	this.Src = ""
-	this.Src_type = Src_is_code_
-	this.A = []string {}
+	this.A = []*Val___ {}
 	this.is_mk_all = false
 	this.all = ""
+}
+
+func (this *Args___) Src_file__(s string) {
+	this.Src = s
+	this.Src_type = Src_is_file_
+}
+
+func (this *Args___) Src_code__(s string) {
+	this.Src = s
+	this.Src_type = Src_is_code_
+}
+
+func (this *Args___) Add__(s ...string) {
+	for _, s2 := range s {
+		this.A = append(this.A, &Val___{S:s2})
+	}
+}
+
+func (this *Args___) Add2__(v *Val___) {
+	this.A = append(this.A, v)
+}
+
+func (this *Args___) A__() (a []string) {
+	a = []string {}
+	for _, v := range this.A {
+		a = append(a, v.S)
+	}
+	return
 }
 
 func (this *Args___) all__() string {
 	if !this.is_mk_all {
 		this.is_mk_all = true
-		for i, s := range this.A {
+		for i, v := range this.A {
+			s := v.S
 			if i > 0 {
 				this.all += " "
 			}
@@ -115,18 +144,4 @@ func (this *Args___) Parse__(a []string, from int, lvl uint) {
 		}
 		this.Add__(s)
 	}
-}
-
-func (this *Args___) Src_file__(s string) {
-	this.Src = s
-	this.Src_type = Src_is_file_
-}
-
-func (this *Args___) Src_code__(s string) {
-	this.Src = s
-	this.Src_type = Src_is_code_
-}
-
-func (this *Args___) Add__(s ...string) {
-	this.A = append(this.A, s...)
 }

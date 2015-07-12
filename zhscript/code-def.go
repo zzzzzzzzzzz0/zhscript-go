@@ -1,6 +1,7 @@
 package zhscript
 
-func is_def__(code []rune, up_qv *Qv___, i1 int, buf1 *Buf___, thiz1 *buf_codes___) (i int, kw *Keyword___, thiz *buf_codes___, is_no_arg, ok bool) {
+func is_def__(code []rune, qv *Qv___, i1 int, buf1 *Buf___, thiz1 *buf_codes___) (i int,
+kw *Keyword___, thiz *buf_codes___, is_no_arg, ok bool, err *Errinfo___) {
 	i = i1
 	f1 := func(v *Var___) bool {
 		name2 := []rune(v.Name)
@@ -9,6 +10,7 @@ func is_def__(code []rune, up_qv *Qv___, i1 int, buf1 *Buf___, thiz1 *buf_codes_
 			if _, ok2 := Startswith__(code, name2, i); ok2 {
 				thiz = new_buf_codes__(Kws_.Def)
 				thiz.add_text2__(v.Name)
+				thiz.names = v.Argnames
 
 				thiz1.add_text__(buf1)
 				if v.Qian_arg > 0 {
@@ -28,11 +30,12 @@ func is_def__(code []rune, up_qv *Qv___, i1 int, buf1 *Buf___, thiz1 *buf_codes_
 								break
 							}
 						}
-						i2--
-						if thiz1.kw == nil && qian <= 1 {
+						if code.kw__() == Kws_.Juhao || code.kw__().is2__(m_logic_) {
+							i2++
 							thiz.separ__()
 							break
 						}
+						i2--
 					}
 					for i3 := i2; i3 < len(a); i3++ {
 						thiz.add__(a[i3])
@@ -56,37 +59,69 @@ func is_def__(code []rune, up_qv *Qv___, i1 int, buf1 *Buf___, thiz1 *buf_codes_
 	f := func(code code___) bool {
 		if code.kw__() == Kws_.Def {
 			set2 := new(Var___)
+			i2 := 0
+			var s2 string
 			for_codes__(code.(*code_var___).name, func(code code___) bool {
 				switch code.kw__() {
-					case Kws_.Kaiyinhao:
-					set2.Name += code.(*code_text___).s
-					case Kws_.Kaifangkuohao:
+				case Kws_.Kaiyinhao:
+					s := code.(*code_text___).s
+					if i2 == 0 {
+						set2.Name += s
+					} else {
+						s2 += s
+					}
+				case Kws_.Kaifangkuohao:
 					for_codes__(code.(*code_1___).codes, func(code2 code___) bool {
 						if codet, ok := code2.(*code_text___); ok {
 							var_name3__(codet.s, nil, set2, nil)
 						}
 						return false
 					})
+				case Kws_.Kaidanyinhao:
+					buf := New_buf__()
+					_, err2 := qv.z2_var__(code.(*code_1___).codes, 0, code.kw__(), nil, buf)
+					if err2 != nil {
+						set2.Name = ""
+						return true
+					}
+					s := buf.String()
+					if i2 == 0 {
+						set2.Name += s
+					} else {
+						s2 += s
+					}
+				case Kws_.Dunhao:
+					if i2 > 0 {
+						set2.argnames_add__(s2)
+						s2 = ""
+					}
+					i2++
 				}
 				return false
 			})
+			if i2 > 0 {
+				set2.argnames_add__(s2)
+			}
 			if f1(set2) {
 				return true
 			}
 		}
 		return false
 	}
+	/*if _, ok2 := Startswith__(code, []rune("啊—"), i1); ok2 {
+		O__("") 
+	}*/
 	thiz3 := thiz1
 	for {
 		if thiz3 == nil {
 			break
 		}
-		if for_codes__(thiz3.codes, f) {
+		if for_codes2__(thiz3.codes, f, true) {
 			return
 		}
 		thiz3 = thiz3.up
 	}
-	v := for_var__(f1, Kws_.Def, up_qv)
+	v := for_var__(f1, Kws_.Def, qv)
 	if v != nil {
 		return
 	}

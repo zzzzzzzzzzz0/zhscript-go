@@ -6,7 +6,7 @@ import (
 	"os"
 )
 
-var known_path_ = new(List___)
+var known_path_ = New_strings__()
 
 func Known_path_add__(path string) {
 	i := strings.LastIndex(path, "/")
@@ -29,20 +29,20 @@ func Known_path_add__(path string) {
 	if dir == "" {
 		return
 	}
-	if !known_path_.Find__(func(e *Em___) bool {return e.Value.(string) == dir}) {
+	if !known_path_.Find__(func(s string)bool {return s == dir}) {
 		if o_path_ {
 			o__(0, "known_path %s|", dir)
 			o_n__()
 		}
-		known_path_.PushBack(dir)
+		known_path_.Add__(dir)
 	}
 }
 
 func ReadFile__(src string) ([]byte, bool) {
-	if src2, base, ok := Get_path__(src); ok {
+	if src2, dir, ok := Get_path__(src); ok {
 		b, err := ioutil.ReadFile(src2)
 		if err == nil {
-			if base == "" {
+			if dir == "" {
 				Known_path_add__(src2)
 			}
 			return b, true
@@ -52,7 +52,7 @@ func ReadFile__(src string) ([]byte, bool) {
 }
 
 func Get_path__(src string) (src2, dir string, ok bool) {
-	e2 := known_path_.Front()
+	var i int
 	src2 = src
 	for {
 		_, err := os.Stat(src2)
@@ -63,31 +63,26 @@ func Get_path__(src string) (src2, dir string, ok bool) {
 			}
 			return
 		}
-		if e2 == nil {
+		if i >= known_path_.Len__() {
 			break
 		}
-		dir = e2.Value.(string)
+		dir = known_path_.A[i]
 		src2 = dir + "/" + src
 		if o_path_ {
 			o__(0, "src %s dir %s", src2, dir)
 			o_n__()
 		}
-		e2 = e2.Next()
+		i++
 	}
 	return
 }
 
-func Get_dir__(src string) (base string) {
-	e2 := known_path_.Front()
-	for {
-		if e2 == nil {
-			break
+func Get_dir__(src string) (dir string) {
+	known_path_.Find__(func(dir2 string)bool {
+		if strings.HasPrefix(src, dir2) && len(dir2) > len(dir) {
+			dir = dir2
 		}
-		base2 := e2.Value.(string)
-		if strings.HasPrefix(src, base2) && len(base2) > len(base) {
-			base = base2
-		}
-		e2 = e2.Next()
-	}
+		return false
+	})
 	return
 }

@@ -108,8 +108,8 @@ kw *Keyword___, thiz *buf_codes___, is_no_arg, ok bool, err *Errinfo___) {
 		}
 		return false
 	}
-	/*if _, ok2 := Startswith__(code, []rune("啊—"), i1); ok2 {
-		O__("") 
+	/*if _, ok2 := Startswith__(code, []rune("我的"), i1); ok2 {
+		O__("")
 	}*/
 	thiz3 := thiz1
 	for {

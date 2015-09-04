@@ -2,7 +2,7 @@ package zhscript
 
 import "strings"
 
-var shebang_flag_ = "--" + Kws_.Juhao.s
+var Shebang_flag_ = "--" + Kws_.Juhao.s
 const (
 	Src_is_code_ = iota
 	Src_is_file_
@@ -126,11 +126,11 @@ func (this *Args___) Parse__(a []string, from int, lvl uint) {
 				o_args_ = true
 				continue
 			}
-			if i == from && strings.HasSuffix(s, " " + shebang_flag_) {
+			if i == from && strings.HasSuffix(s, " " + Shebang_flag_) {
 				this.Parse__(Fields__(s), 0, lvl + 1)
 				continue
 			}
-			if s == shebang_flag_ {
+			if s == Shebang_flag_ {
 				continue
 			}
 			if lvl == 0 && this.Src == "" && !strings.HasPrefix(s, "-") {

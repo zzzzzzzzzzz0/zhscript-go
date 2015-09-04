@@ -48,7 +48,7 @@ func (this *Buf___) get__(i int) *Buf_item___ {
 }
 
 func (this *Buf___) set_i__(i int, i2 interface{}) {
-	this.get__(i);
+	this.get__(i)
 	this.cur.Val = &Val___{I:i2, Type:'i'}
 }
 

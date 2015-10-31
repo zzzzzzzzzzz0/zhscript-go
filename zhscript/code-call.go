@@ -27,12 +27,16 @@ func call__(args *Args___, qv *Qv___, buf2 *Buf___) (goto1 *Goto___, err1 *Errin
 
 	a := []reflect.Value {}
 	a = append(a, reflect.ValueOf(qv))
-	for _, v := range args.A {
+	for i, v := range args.A {
+		if O_call_ {
+			o__('n', ">%d) %v", i, v)
+			o_n__()
+		}
 		switch v.Type {
-		case 'i':
-			a = append(a, reflect.ValueOf(v.I))
-		default:
+		case "":
 			a = append(a, reflect.ValueOf(v.S))
+		default:
+			a = append(a, reflect.ValueOf(v.I))
 		}
 	}
 	defer func() {
@@ -43,6 +47,10 @@ func call__(args *Args___, qv *Qv___, buf2 *Buf___) (goto1 *Goto___, err1 *Errin
 	i2 := 0
 	for i, v := range m.Call(a) {
 		v2 := v.Interface()
+		if O_call_ {
+			o__('n', "<%d) %T %v", i, v2, v2)
+			o_n__()
+		}
 		switch i {
 		case 0:
 			goto1 = v2.(*Goto___)

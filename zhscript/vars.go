@@ -23,7 +23,7 @@ func Var__(e *Em___) *Var___ {
 type Val___ struct {
 	S string
 	I interface{}
-	Type rune
+	Type string
 }
 
 func (this *Val___) copy_i__(val *Val___) {

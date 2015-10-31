@@ -1,6 +1,9 @@
 package zhscript
 
-import "strings"
+import (
+	"strings"
+	"os"
+)
 
 var Shebang_flag_ = "--" + Kws_.Juhao.s
 const (
@@ -85,12 +88,27 @@ func (this *Args___) all__() string {
 	return this.all
 }
 
-var o_liucheng_, o_liucheng2_, o_ansi_, o_tree_, o_path_, o_args_ bool
+var O_ansi_, O_liucheng_, O_liucheng2_, O_tree_, O_path_, O_args_, O_call_ bool
+
+type o_set___ struct {
+	tag string
+	b *bool
+}
+var o_set_ = []o_set___ {
+	{"-zhscript-o-ansi", &O_ansi_},
+	{"-zhscript-o-lc", &O_liucheng_},
+	{"-zhscript-o-lc2", &O_liucheng2_},
+	{"-zhscript-o-tree", &O_tree_},
+	{"-zhscript-o-path", &O_path_},
+	{"-zhscript-o-args", &O_args_},
+	{"-zhscript-o-call", &O_call_},
+}
 
 func (this *Args___) Parse__(a []string, from int, lvl uint) {
 	all_is := false
+	for1:
 	for i, s := range a {
-		if o_args_ {
+		if O_args_ {
 			var i1 uint = 0
 			for ; i1 < lvl; i1++ {
 				o_t__()
@@ -102,30 +120,19 @@ func (this *Args___) Parse__(a []string, from int, lvl uint) {
 			continue
 		}
 		if !all_is {
-			if s == "-zhscript-o-lc" {
-				o_liucheng_ = true
-				continue
+			for _, o_set := range o_set_ {
+				if s == o_set.tag {
+					*o_set.b = true
+					continue for1
+				}
 			}
-			if s == "-zhscript-o-lc2" {
-				o_liucheng2_ = true
-				continue
+			if s == "-zhscript-help" {
+				for _, o_set := range o_set_ {
+					println(o_set.tag)
+				}
+				os.Exit(250)
 			}
-			if s == "-zhscript-o-ansi" {
-				o_ansi_ = true
-				continue
-			}
-			if s == "-zhscript-o-tree" {
-				o_tree_ = true
-				continue
-			}
-			if s == "-zhscript-o-path" {
-				o_path_ = true
-				continue
-			}
-			if s == "-zhscript-o-args" {
-				o_args_ = true
-				continue
-			}
+
 			if i == from && strings.HasSuffix(s, " " + Shebang_flag_) {
 				this.Parse__(Fields__(s), 0, lvl + 1)
 				continue
@@ -133,6 +140,7 @@ func (this *Args___) Parse__(a []string, from int, lvl uint) {
 			if s == Shebang_flag_ {
 				continue
 			}
+
 			if lvl == 0 && this.Src == "" && !strings.HasPrefix(s, "-") {
 				this.Src_file__(s)
 				continue

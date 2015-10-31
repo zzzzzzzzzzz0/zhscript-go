@@ -49,7 +49,7 @@ var Kws_ = struct {
 	Kaikuohao, Bikuohao,
 	Kaifangkuohao, Bifangkuohao,
 	Kaihuakuohao, Bihuakuohao,
-	Dunhao, Maohao,
+	Dunhao, Dunhao2,
 	
 	Begin_code, End_code,
 	Begin_yuanyang, End_yuanyang,
@@ -66,6 +66,7 @@ var Kws_ = struct {
 	Def, Noarg, Qianarg,
 
 	Arg, Args, Length,
+	Vars,
 	CR, LF,
 
 	Eval, Interp, Load,
@@ -86,7 +87,7 @@ var Kws_ = struct {
 	new_kw__("先", m_1_),
 	new_kw__("了", m_1_ | m_ret_lvl_),
 	new_kw__("、", m_1_),
-	new_kw__("：", m_1_),
+	new_kw__("、", m_1_),
 
 	new_kw__("下代码", m_code_),
 	new_kw__("上代码", m_code_),
@@ -128,6 +129,8 @@ var Kws_ = struct {
 	new_kw__("参数", 0),
 	new_kw__("参数栈", 0),
 	new_kw__("数目", 0),
+
+	new_kw__("变量区", 0),
 
 	new_kw__("回车", m_1_),
 	new_kw__("换行", m_1_),

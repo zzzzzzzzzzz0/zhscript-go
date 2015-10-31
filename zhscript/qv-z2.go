@@ -4,7 +4,7 @@ import "fmt"
 
 func (this *Qv___) z_code__(code code___, lvl uint, buf *Buf___) (*Goto___, *Errinfo___) {
 	kw := code.kw__()
-	if o_liucheng_ {
+	if O_liucheng_ {
 		o__('k', "%s", kw)
 	}
 	switch kw {
@@ -61,7 +61,7 @@ func (this *Qv___) z_code__(code code___, lvl uint, buf *Buf___) (*Goto___, *Err
 	if err2 != nil || goto2 != nil {
 		return goto2, err2
 	}
-	if o_liucheng_ {
+	if O_liucheng_ {
 		o__('K', "(%d) %s", lvl, kw)
 	}
 	switch kw {
@@ -70,9 +70,16 @@ func (this *Qv___) z_code__(code code___, lvl uint, buf *Buf___) (*Goto___, *Err
 		if err3 != nil {
 			return nil, err3
 		}
+	case Kws_.Echo:
+		for _, bi := range buf2.a {
+			/*if bi.Val != nil {
+				fmt.Printf("%T%p", bi.Val.I, bi.Val.I)
+			}*/
+			fmt.Print(bi.String())
+		}
 	default:
 		s := buf2.S__()
-		if o_liucheng_ {
+		if O_liucheng_ {
 			o__('g', "%s", Replace_crlf__(s))
 		}
 		switch kw {
@@ -89,8 +96,6 @@ func (this *Qv___) z_code__(code code___, lvl uint, buf *Buf___) (*Goto___, *Err
 		case Kws_.Return:
 			return &Goto___{Kws_.Return, s}, nil
 			
-		case Kws_.Echo:
-			fmt.Print(s)
 		case Kws_.Exec:
 			this.z2_exec__(s, buf)
 		}
@@ -99,7 +104,7 @@ func (this *Qv___) z_code__(code code___, lvl uint, buf *Buf___) (*Goto___, *Err
 }
 
 func (this *Qv___) z2__(codes *codes___, lvl uint, buf *Buf___) (*Goto___, *Errinfo___) {
-	if o_liucheng_ {
+	if O_liucheng_ {
 		o_n__()
 		o__('n', "(%d)", lvl)
 		o__(0, "%s", codes.String())

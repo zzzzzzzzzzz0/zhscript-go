@@ -7,7 +7,7 @@ import (
 
 func var_name3__(s string, qv1 *Qv___, ret2 *Var___, shou *Strings___) (qv *Qv___, err2 *Errinfo___) {
 	qv = qv1
-	if o_liucheng_ {
+	if O_liucheng_ {
 		o__('x', "%s", s)
 	}
 	switch s {
@@ -55,7 +55,7 @@ func var_name3__(s string, qv1 *Qv___, ret2 *Var___, shou *Strings___) (qv *Qv__
 
 func (this *Qv___) var_name2__(code code___, lvl uint, qv1 *Qv___, ret2 *Var___, buf1 *Buf___) (qv *Qv___, err2 *Errinfo___) {
 	kw := code.kw__()
-	if o_liucheng_ {
+	if O_liucheng_ {
 		o__('k', "%s", kw)
 	}
 	qv = qv1
@@ -104,11 +104,34 @@ func (this *Qv___) var_name__(codes *codes___, lvl uint, buf1 *Buf___) (qv *Qv__
 			return
 		}
 	}
+	buf1.cur.Annota.Find__(func (s string) bool {
+		e := qv.Vars.find__(s)
+		if e != nil {
+			v := Var__(e)
+			if v.Val.Type == "q" {
+				qv = v.Val.I.(*Qv___)
+			}
+			return true
+		}
+		return false
+	})
+	return
+}
+
+func (this *Qv___) z2_var2_z__(kw *Keyword___, f func(), buf *Buf___) (exist, is_to_buf bool) {
+	switch kw {
+	case Kws_.Kaidanyinhao:
+		f()
+	case Kws_.Has:
+		buf.WriteRune('1')
+	}
+	exist = true
+	is_to_buf = true
 	return
 }
 
 func (this *Qv___) z2_var2__(name string, annota *Strings___, qv  *Qv___, codes *codes___, lvl uint, kw *Keyword___, load *code_z___, buf *Buf___) (bool, *Errinfo___) {
-	if o_liucheng_ {
+	if O_liucheng_ {
 		o__('g', "%s", name)
 	}
 	var (
@@ -149,49 +172,36 @@ func (this *Qv___) z2_var2__(name string, annota *Strings___, qv  *Qv___, codes 
 			}
 			exist = true
 		case name == Kws_.Arg.s:
-			switch kw {
-			case Kws_.Kaidanyinhao:
+			exist, is_to_buf = this.z2_var2_z__(kw, func() {
 				buf.WriteString(qv.Args.all__())
-			case Kws_.Has:
-				buf.WriteRune('1')
-			}
-			exist = true
-			is_to_buf = true
+			}, buf)
 		case name == Kws_.Arg.s + "0":
-			switch kw {
-			case Kws_.Kaidanyinhao:
+			exist, is_to_buf = this.z2_var2_z__(kw, func() {
 				buf.WriteString(qv.Args.Src2)
-			case Kws_.Has:
-				buf.WriteRune('1')
-			}
-			exist = true
-			is_to_buf = true
+			}, buf)
 		case name == Kws_.Arg.s + Kws_.Length.s:
-			switch kw {
-			case Kws_.Kaidanyinhao:
+			exist, is_to_buf = this.z2_var2_z__(kw, func() {
 				buf.WriteString(strconv.Itoa(len(qv.Args.A)))
-			case Kws_.Has:
-				buf.WriteRune('1')
-			}
-			exist = true
-			is_to_buf = true
+			}, buf)
 		case strings.HasPrefix(name, Kws_.Arg.s):
 			n := name[len(Kws_.Arg.s):]
 			i3, err3 := strconv.Atoi(n)
 			if err3 == nil {
 				i3--
 				if i3 >= 0 && i3 < len(qv.Args.A) {
-					switch kw {
-					case Kws_.Kaidanyinhao:
+					exist, is_to_buf = this.z2_var2_z__(kw, func() {
 						buf.WriteString(qv.Args.A[i3].S)
-					case Kws_.Has:
-						buf.WriteRune('1')
-					}
-					exist = true
-					is_to_buf = true
+					}, buf)
 				}
 			}
 		}
+	}
+	switch name {
+	case Kws_.Vars.s:
+		exist, is_to_buf = this.z2_var2_z__(kw, func() {
+			buf.cur.Val = &Val___{I:qv, Type:"q"}
+			qv.Up = nil
+		}, buf)
 	}
 	if !exist {
 		qv = find_qv__(annota, qv)
@@ -222,10 +232,10 @@ func (this *Qv___) z2_var2__(name string, annota *Strings___, qv  *Qv___, codes 
 					switch kw {
 					default:
 						switch v.Val.Type {
-						case 'i':
-							buf.cur.Val = v.Val
-						default:
+						case "":
 							buf.WriteString(v.Val.S)
+						default:
+							buf.cur.Val = v.Val
 						}
 					case Kws_.Has:
 						buf.WriteRune('1')
@@ -233,13 +243,14 @@ func (this *Qv___) z2_var2__(name string, annota *Strings___, qv  *Qv___, codes 
 					is_to_buf = true
 				case Kws_.Alias:
 					v.Annota_val.Find__(func (s string) bool {
-						qv, err2 = var_name3__(s, qv, nil, nil)
+						qv, err2 = var_name3__(s, qv, nil, nil/*buf.cur.Annota*/)
 						return err2 != nil
 					})
 					if err2 != nil {
 						err2.Add__(codes.String())
 						return false, err2
 					}
+					//O__("%v",buf.cur.Annota)
 					is_to_buf, err2 = this.z2_var2__(v.Val.S, annota, qv, codes, lvl + 1, kw, load, buf)
 					if err2 != nil {
 						err2.Add__(v.Kw)

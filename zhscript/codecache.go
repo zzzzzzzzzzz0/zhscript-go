@@ -11,13 +11,13 @@ func codecache__(code []byte) (*codes___, string) {
 	md := md5.New()
 	md.Write(code)
 	id := hex.EncodeToString(md.Sum(nil))
-	if o_liucheng_ {
+	if O_liucheng_ {
 		o_n__()
 		o__(0, "%s", id)
 	}
 	
 	codes, ok := codecache_[id]
-	if o_liucheng_ {
+	if O_liucheng_ {
 		if !ok {
 			o__(0, " new")
 		}

@@ -28,7 +28,7 @@ func (this *code_z___) z2__(code code___, qv *Qv___, lvl uint, buf *Buf___) (s s
 		s = buf2.String()
 		is_to_buf = true
 	}
-	if o_liucheng_ {
+	if O_liucheng_ {
 		o__('x', "%s", s)
 	}
 	return

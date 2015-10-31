@@ -1,7 +1,7 @@
 package zhscript
 
 func (this *codes___) z__(code []rune, qv *Qv___, from, to, end_mask, mask, lvl, lvl2 int, use_def bool, thiz *buf_codes___) (int, *Keyword___, *Errinfo___) {
-	if o_liucheng2_ {
+	if O_liucheng2_ {
 		o_n__()
 		o__('n', "(%d)%d-%d,%b", lvl, from, to, end_mask)
 		//o__('n', " %p/%p", thiz.codes, this)
@@ -37,7 +37,7 @@ func (this *codes___) z__(code []rune, qv *Qv___, from, to, end_mask, mask, lvl,
 		}
 		i, kw, ok = is_kw__(code, i, mask)
 		if ok {
-			if o_liucheng2_ {
+			if O_liucheng2_ {
 				o__('k', "%s", kw)
 			}
 			switch kw {
@@ -111,7 +111,7 @@ func (this *codes___) z__(code []rune, qv *Qv___, from, to, end_mask, mask, lvl,
 					mask = mask_bak.Back_i__()
 				}
 				continue
-			case Kws_.Dunhao, Kws_.Maohao:
+			case Kws_.Dunhao, Kws_.Dunhao2:
 				thiz.add_text__(buf)
 				thiz.separ__()
 				continue
@@ -126,14 +126,14 @@ func (this *codes___) z__(code []rune, qv *Qv___, from, to, end_mask, mask, lvl,
 			switch {
 			case kw.is2__(m_ret_lvl_):
 				if lvl > 0 {
-					if o_liucheng2_ {
+					if O_liucheng2_ {
 						o__('r', "lvl %s", kw)
 					}
 					return i, kw, nil
 				}
 			case kw.is2__(m_logic_):
 				if lvl > 0 {
-					if o_liucheng2_ {
+					if O_liucheng2_ {
 						o__('r', "if %s", kw)
 					}
 					return i, kw, nil
@@ -204,12 +204,12 @@ func (this *codes___) z__(code []rune, qv *Qv___, from, to, end_mask, mask, lvl,
 				for {
 					i2, kw2, err2 = this.z__(code, qv, from2, to, end_mask2, mask | end_mask2, lvl + 1, lvl2, use_def2, thiz2)
 					if err2 != nil {
-						if o_liucheng2_ {
+						if O_liucheng2_ {
 							o__('r', "err2 (%d)%s", lvl, err2)
 						}
 						return from2, kw2, err2
 					}
-					if o_liucheng2_ {
+					if O_liucheng2_ {
 						o__('K', "(%d)%d %s %s", lvl, i2, kw, kw2)
 						//o__('K', " %p/%p", thiz2.codes, thiz.codes)
 					}
@@ -234,7 +234,7 @@ func (this *codes___) z__(code []rune, qv *Qv___, from, to, end_mask, mask, lvl,
 									if err3 != nil {
 										return i, kw2, err3
 									}
-									if o_liucheng2_ {
+									if O_liucheng2_ {
 										o__('r', "m_then %s", kw2)
 									}
 									return i2, kw2, nil
@@ -265,7 +265,7 @@ func (this *codes___) z__(code []rune, qv *Qv___, from, to, end_mask, mask, lvl,
 						case kw2 == Kws_.Equ || kw == Kws_.Equ:
 							if var2 == nil {
 								if end_mask & m_equ_ != 0 {
-									if o_liucheng2_ {
+									if O_liucheng2_ {
 										o__('r', "m_equ %s", kw2)
 									}
 									return i2, kw2, nil
@@ -298,7 +298,7 @@ func (this *codes___) z__(code []rune, qv *Qv___, from, to, end_mask, mask, lvl,
 				switch kw2 {
 				case Kws_.Bihuakuohao:
 					if kw != Kws_.Kaihuakuohao && (end_mask & m_huakuohao_ != 0) {
-						if o_liucheng2_ {
+						if O_liucheng2_ {
 							o__('r', "bihua %s", kw)
 						}
 						return i2, kw2, nil
@@ -307,7 +307,7 @@ func (this *codes___) z__(code []rune, qv *Qv___, from, to, end_mask, mask, lvl,
 				i = i2
 			}
 			if end_mask & kw.mask != 0 {
-				if o_liucheng2_ {
+				if O_liucheng2_ {
 					o__('e', "%s", kw)
 				}
 				switch kw {
@@ -322,7 +322,7 @@ func (this *codes___) z__(code []rune, qv *Qv___, from, to, end_mask, mask, lvl,
 		i++
 	}
 	thiz.add_text__(buf)
-	if o_liucheng2_ {
+	if O_liucheng2_ {
 		o__('r', "e")
 		o_n__()
 	}
@@ -330,7 +330,7 @@ func (this *codes___) z__(code []rune, qv *Qv___, from, to, end_mask, mask, lvl,
 }
 
 func (this *codes___) z3__(thiz, thiz2 *buf_codes___, if2 *code_logic___, var2 *code_var___, kw *Keyword___, i, i2 int, code []rune) (*Errinfo___) {
-	if o_liucheng2_ {
+	if O_liucheng2_ {
 		o__('x', "%s", kw)
 	}
 	switch kw {
@@ -374,7 +374,7 @@ func (this *codes___) z2__(code []rune, qv *Qv___) *Errinfo___ {
 	_, _, err := this.z__(code, qv, 0, len(code), 0, m_all_, 0, 0, true, buf)
 	if err == nil {
 		buf.to__(this)
-		if o_tree_ {
+		if O_tree_ {
 			o_codes__(this, 0)
 		}
 	}

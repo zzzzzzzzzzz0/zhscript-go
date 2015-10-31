@@ -81,7 +81,7 @@ func (this *Qv___) z2_for__(codes *codes___, lvl uint, buf *Buf___) (*Goto___, *
 			return goto2, err2
 		}
 		if goto2 != nil {
-			if o_liucheng_ {
+			if O_liucheng_ {
 				o__('r', "goto2 %s %s", name, goto2.S)
 			}
 			if goto2.S == "" || name == goto2.S {
@@ -92,7 +92,7 @@ func (this *Qv___) z2_for__(codes *codes___, lvl uint, buf *Buf___) (*Goto___, *
 					break
 				}
 			}
-			if o_liucheng_ {
+			if O_liucheng_ {
 				o__('r', "goto2 (%d)%s", lvl, goto2.S)
 			}
 			return goto2, err2

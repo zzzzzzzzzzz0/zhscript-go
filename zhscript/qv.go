@@ -49,7 +49,7 @@ func find_qv__(annota *Strings___, qv *Qv___) *Qv___ {
 }
 
 func (this *Qv___) Z__(lvl uint, buf *Buf___) (*Goto___, *Errinfo___) {
-	if o_args_ {
+	if O_args_ {
 		switch this.Args.Src_type {
 		case Src_is_code_:
 			o__('n', "...")

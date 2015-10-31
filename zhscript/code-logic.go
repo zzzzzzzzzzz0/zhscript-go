@@ -18,7 +18,7 @@ func (this *code_logic___) z2__(codes *codes___, qv *Qv___, lvl, lvl2 uint) (boo
 	for i := 0; i < len(codes.a); i++ {
 		code := codes.a[i]
 		kw := code.kw__()
-		if o_liucheng_ {
+		if O_liucheng_ {
 			o_n__()
 			o__('n', "if(%d)%d)%d)%s", lvl, lvl2, i, kw)
 			o_n__()
@@ -162,7 +162,7 @@ func (this *code_logic___) result__(left_kw *Keyword___, s string, is_not bool) 
 	if is_not {
 		b = !b
 	}
-	if o_liucheng_ {
+	if O_liucheng_ {
 		if left_kw == nil {
 			o__('K', "%s=%v", s, b)
 		} else {

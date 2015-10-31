@@ -52,28 +52,29 @@ func (this *Zhscript___) New_main_qv__(args *Args___) (*Qv___, *Errinfo___) {
 var	top_qv_ *Qv___
 
 func o__(r rune, format string, a ...interface{}) (n int, err error) {
-	if o_ansi_ {
+	if O_ansi_ {
 		head := "\x1b[0;3"
 		switch r {
-		case 'k':
+		case 'k': //key
 			head += "7;42"
 		case 'K':
 			head += "3;42"
-		case 'r':
+		case 'r': //ret 值
 			head += "0;42"
-		case 'e':
+		case 'e': //end 结果
 			head += "1;42"
-		case 'x':
+		case 'x': //exec
 			head += "7;41"
-		case 'g':
+		case 'g': //gonggong
 			head += "1"
-		case 'n':
+		case 'n': //(n) 参数
 			head += "4"
 		default:
 			head += "2"
 		}
 		format = head + "m" + format + "\x1b[0m"
 	} else {
+		//空格是保持原样
 		if r != ' ' {
 			head := "{"
 			if r > 0 {

@@ -30,7 +30,7 @@ func Known_path_add__(path string) {
 		return
 	}
 	if !known_path_.Find__(func(s string)bool {return s == dir}) {
-		if o_path_ {
+		if O_path_ {
 			o__(0, "known_path %s|", dir)
 			o_n__()
 		}
@@ -59,7 +59,12 @@ func Get_path__(src string) (src2, dir string, ok bool) {
 		if err == nil {
 			ok = true
 			if dir == "" {
-				dir = Get_dir__(src)
+				known_path_.Find__(func(dir2 string)bool {
+					if strings.HasPrefix(src, dir2) && len(dir2) > len(dir) {
+						dir = dir2
+					}
+					return false
+				})
 			}
 			return
 		}
@@ -68,21 +73,11 @@ func Get_path__(src string) (src2, dir string, ok bool) {
 		}
 		dir = known_path_.A[i]
 		src2 = dir + "/" + src
-		if o_path_ {
+		if O_path_ {
 			o__(0, "src %s dir %s", src2, dir)
 			o_n__()
 		}
 		i++
 	}
-	return
-}
-
-func Get_dir__(src string) (dir string) {
-	known_path_.Find__(func(dir2 string)bool {
-		if strings.HasPrefix(src, dir2) && len(dir2) > len(dir) {
-			dir = dir2
-		}
-		return false
-	})
 	return
 }

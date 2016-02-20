@@ -111,12 +111,25 @@ func (this *Args___) Parse__(a []string, from int, lvl uint) {
 		if O_args_ {
 			var i1 uint = 0
 			for ; i1 < lvl; i1++ {
-				o_t__()
+				O_t__()
 			}
 			o__('n', "%d) %s", i, s)
-			o_n__()
+			O_n__()
 		}
 		if i < from {
+			continue
+		}
+
+		if i == from && strings.HasSuffix(s, " " + Shebang_flag_) {
+			this.Parse__(Fields__(s), 0, lvl + 1)
+			continue
+		}
+		if s == Shebang_flag_ {
+			continue
+		}
+
+		if s == "----" {
+			all_is = !all_is
 			continue
 		}
 		if !all_is {
@@ -133,20 +146,8 @@ func (this *Args___) Parse__(a []string, from int, lvl uint) {
 				os.Exit(250)
 			}
 
-			if i == from && strings.HasSuffix(s, " " + Shebang_flag_) {
-				this.Parse__(Fields__(s), 0, lvl + 1)
-				continue
-			}
-			if s == Shebang_flag_ {
-				continue
-			}
-
 			if lvl == 0 && this.Src == "" && !strings.HasPrefix(s, "-") {
 				this.Src_file__(s)
-				continue
-			}
-			if s == "----" {
-				all_is = true
 				continue
 			}
 		}

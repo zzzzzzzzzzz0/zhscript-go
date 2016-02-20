@@ -16,9 +16,9 @@ func(this *Strings___) Len__() int {
 	return len(this.A)
 }
 
-func (this *Strings___) Find__(f func (string) bool) bool {
+func (this *Strings___) Find__(f__ func (string) bool) bool {
 	for _, s := range this.A {
-		if f(s) {
+		if f__(s) {
 			return true
 		}
 	}

@@ -2,11 +2,11 @@ package zhscript
 
 func (this *codes___) z__(code []rune, qv *Qv___, from, to, end_mask, mask, lvl, lvl2 int, use_def bool, thiz *buf_codes___) (int, *Keyword___, *Errinfo___) {
 	if O_liucheng2_ {
-		o_n__()
+		O_n__()
 		o__('n', "(%d)%d-%d,%b", lvl, from, to, end_mask)
 		//o__('n', " %p/%p", thiz.codes, this)
 		o__(0, "%v", string(code[from:to]))
-		o_n__()
+		O_n__()
 	}
 	var (
 		i = from
@@ -120,6 +120,12 @@ func (this *codes___) z__(code []rune, qv *Qv___, from, to, end_mask, mask, lvl,
 				continue
 			case Kws_.CR:
 				buf.WriteRune('\r')
+				continue
+			case Kws_.TAB:
+				buf.WriteRune('\t')
+				continue
+			case Kws_.ESC:
+				buf.WriteRune(27)
 				continue
 			}
 			thiz.add_text__(buf)
@@ -324,7 +330,7 @@ func (this *codes___) z__(code []rune, qv *Qv___, from, to, end_mask, mask, lvl,
 	thiz.add_text__(buf)
 	if O_liucheng2_ {
 		o__('r', "e")
-		o_n__()
+		O_n__()
 	}
 	return i, nil, nil
 }

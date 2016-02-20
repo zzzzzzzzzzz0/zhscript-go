@@ -22,7 +22,7 @@ func (this *Qv___) z2_for__(codes *codes___, lvl uint, buf *Buf___) (*Goto___, *
 			i3 int
 		)
 		buf2 := New_buf__()
-		f := func() {
+		f__ := func() {
 			if is_buf2 {
 				if i3 == 0 {
 					s2 := buf2.String()
@@ -50,7 +50,7 @@ func (this *Qv___) z2_for__(codes *codes___, lvl uint, buf *Buf___) (*Goto___, *
 			code := codes.a[i]
 			if code.kw__() == Kws_.Dunhao {
 				is_buf2 = true
-				f()
+				f__()
 				continue
 			}
 			goto2, err2 := this.z_code__(code, lvl, buf2)
@@ -59,7 +59,7 @@ func (this *Qv___) z2_for__(codes *codes___, lvl uint, buf *Buf___) (*Goto___, *
 			}
 			is_buf2 = true
 		}
-		f()
+		f__()
 		if name != "" {
 			cnt_name = New_buf__()
 			cnt_name.WriteString(name)

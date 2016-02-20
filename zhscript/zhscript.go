@@ -10,12 +10,12 @@ type Zhscript___ struct {
 	Args Args___
 }
 
-func New__(a []string, cc func([]byte, string) []byte, i interface{}) (z *Zhscript___, err *Errinfo___) {
+func New__(a []string, cc__ func([]byte, string) []byte, i interface{}) (z *Zhscript___, err *Errinfo___) {
 	z = new(Zhscript___)
 	z.Args.Parse__(a, 1, 0)
 	
 	call_cfg__(i)
-	content_convert_ = cc
+	content_convert__ = cc__
 	
 	file, _ := exec.LookPath(a[0])
 	path, _ := filepath.Abs(file)
@@ -88,9 +88,9 @@ func o__(r rune, format string, a ...interface{}) (n int, err error) {
 func O__(format string, a ...interface{}) (n int, err error) {
 	return o__(0, format, a...)
 }
-func o_n__() {
+func O_n__() {
 	fmt.Println()
 }
-func o_t__() {
+func O_t__() {
 	fmt.Print("\t")
 }

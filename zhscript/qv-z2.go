@@ -105,10 +105,10 @@ func (this *Qv___) z_code__(code code___, lvl uint, buf *Buf___) (*Goto___, *Err
 
 func (this *Qv___) z2__(codes *codes___, lvl uint, buf *Buf___) (*Goto___, *Errinfo___) {
 	if O_liucheng_ {
-		o_n__()
+		O_n__()
 		o__('n', "(%d)", lvl)
 		o__(0, "%s", codes.String())
-		o_n__()
+		O_n__()
 	}
 	for _, code := range codes.a {
 		goto2, err2 := this.z_code__(code, lvl, buf)

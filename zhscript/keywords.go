@@ -67,7 +67,7 @@ var Kws_ = struct {
 
 	Arg, Args, Length,
 	Vars,
-	CR, LF,
+	CR, LF, TAB, ESC,
 
 	Eval, Interp, Load,
 	
@@ -134,6 +134,8 @@ var Kws_ = struct {
 
 	new_kw__("回车", m_1_),
 	new_kw__("换行", m_1_),
+	new_kw__("制表符", m_1_),
+	new_kw__("ESC", m_1_),
 
 	new_kw__("算术", m_1_),
 	new_kw__("解释", m_1_),

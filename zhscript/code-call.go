@@ -30,7 +30,7 @@ func call__(args *Args___, qv *Qv___, buf2 *Buf___) (goto1 *Goto___, err1 *Errin
 	for i, v := range args.A {
 		if O_call_ {
 			o__('n', ">%d) %v", i, v)
-			o_n__()
+			O_n__()
 		}
 		switch v.Type {
 		case "":
@@ -49,7 +49,7 @@ func call__(args *Args___, qv *Qv___, buf2 *Buf___) (goto1 *Goto___, err1 *Errin
 		v2 := v.Interface()
 		if O_call_ {
 			o__('n', "<%d) %T %v", i, v2, v2)
-			o_n__()
+			O_n__()
 		}
 		switch i {
 		case 0:

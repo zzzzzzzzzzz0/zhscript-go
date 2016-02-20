@@ -14,7 +14,9 @@ func var_name3__(s string, qv1 *Qv___, ret2 *Var___, shou *Strings___) (qv *Qv__
 	case Kws_.Top.s:
 		qv = top_qv_
 	case Kws_.Up.s:
-		qv = qv.Up
+		if qv != nil {
+			qv = qv.Up
+		}
 		if qv == nil {
 			err2 = New_errinfo__(Errs_.Annota)
 			return
@@ -107,7 +109,7 @@ func (this *Qv___) var_name__(codes *codes___, lvl uint, buf1 *Buf___) (qv *Qv__
 	buf1.cur.Annota.Find__(func (s string) bool {
 		e := qv.Vars.find__(s)
 		if e != nil {
-			v := Var__(e)
+			v := var__(e)
 			if v.Val.Type == "q" {
 				qv = v.Val.I.(*Qv___)
 			}
@@ -118,10 +120,10 @@ func (this *Qv___) var_name__(codes *codes___, lvl uint, buf1 *Buf___) (qv *Qv__
 	return
 }
 
-func (this *Qv___) z2_var2_z__(kw *Keyword___, f func(), buf *Buf___) (exist, is_to_buf bool) {
+func (this *Qv___) z2_var2_z__(kw *Keyword___, f__ func(), buf *Buf___) (exist, is_to_buf bool) {
 	switch kw {
 	case Kws_.Kaidanyinhao:
-		f()
+		f__()
 	case Kws_.Has:
 		buf.WriteRune('1')
 	}
@@ -224,7 +226,7 @@ func (this *Qv___) z2_var2__(name string, annota *Strings___, qv  *Qv___, codes 
 			}
 		}
 		if e != nil {
-			v := Var__(e)
+			v := var__(e)
 			switch kw {
 			case Kws_.Kaidanyinhao, Kws_.Has:
 				switch v.Kw {
@@ -244,13 +246,13 @@ func (this *Qv___) z2_var2__(name string, annota *Strings___, qv  *Qv___, codes 
 				case Kws_.Alias:
 					v.Annota_val.Find__(func (s string) bool {
 						qv, err2 = var_name3__(s, qv, nil, nil/*buf.cur.Annota*/)
+						//O__("%v%v",kw,buf.cur.Annota)
 						return err2 != nil
 					})
 					if err2 != nil {
 						err2.Add__(codes.String())
 						return false, err2
 					}
-					//O__("%v",buf.cur.Annota)
 					is_to_buf, err2 = this.z2_var2__(v.Val.S, annota, qv, codes, lvl + 1, kw, load, buf)
 					if err2 != nil {
 						err2.Add__(v.Kw)

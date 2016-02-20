@@ -30,7 +30,7 @@ func (this *Qv___) z2_set__(var1 *code_var___, lvl uint, kw *Keyword___) *Errinf
 	qv := this
 	ret2 := new(Var___)
 	name2 := name
-	add_def_arg := func() bool {
+	add_def_arg__ := func() bool {
 		if kw == Kws_.Def {
 			if i > 0 {
 				ret2.argnames_add__(name2.S__())
@@ -42,7 +42,7 @@ func (this *Qv___) z2_set__(var1 *code_var___, lvl uint, kw *Keyword___) *Errinf
 	for _, code := range codes.a {
 		switch code.kw__() {
 		case Kws_.Dunhao:
-			if add_def_arg() {
+			if add_def_arg__() {
 				name2 = New_buf__()
 			} else {
 				err2 = set_var__(qv, name2, buf, i, ret2, kw)
@@ -62,7 +62,7 @@ func (this *Qv___) z2_set__(var1 *code_var___, lvl uint, kw *Keyword___) *Errinf
 			return err2
 		}
 	}
-	add_def_arg()
+	add_def_arg__()
 	return set_var__(qv, name, buf, i, ret2, kw)
 }
 

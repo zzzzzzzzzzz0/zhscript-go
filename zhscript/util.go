@@ -36,21 +36,35 @@ func Fields__(s string) []string {
 	return ret
 }
 
-func Startswith__(r1, r2 []rune, i int) (int, bool) {
-	i1 := 0
-	i2 := i
+func Startswith2__(r1, r2 []rune, i int, skip_blank bool) (int, bool) {
+	i1 := i
+	i2 := 0
 	for {
-		if i1 >= len(r2) {
-			return i2, true
+		if i2 >= len(r2) {
+			return i1, true
 		}
-		if i2 >= len(r1) {
+		if i1 >= len(r1) {
 			break
 		}
-		if r2[i1] != r1[i2] {
-			break
-		}
+		r3 := r1[i1]
+		r4 := r2[i2]
 		i1++
 		i2++
+		if skip_blank {
+			if r3 >= 0 && r3 <= ' ' {
+				continue
+			}
+			if r4 >= 0 && r4 <= ' ' {
+				continue
+			}
+		}
+		if r3 != r4 {
+			break
+		}
 	}
 	return i, false
+}
+
+func Startswith__(r1, r2 []rune, i int) (int, bool) {
+	return Startswith2__(r1, r2, i, false)
 }

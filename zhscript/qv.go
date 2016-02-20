@@ -10,21 +10,21 @@ type Qv___ struct {
 	Not_my interface{}
 }
 
-func (this *Qv___) find2__(s string, on_no func(string)) *Qv___ {
+func (this *Qv___) find2__(s string, on_no__ func(string)) *Qv___ {
 	for _, s2 := range this.Annota.A {
 		if s2 == s {
 			return this
 		}
 	}
-	if on_no != nil {
-		on_no(s)
+	if on_no__ != nil {
+		on_no__(s)
 	}
 	return nil
 }
 
-func (this *Qv___) find__(annota *Strings___, on_no func(string)) *Qv___ {
+func (this *Qv___) find__(annota *Strings___, on_no__ func(string)) *Qv___ {
 	for _, s := range annota.A {
-		if this.find2__(s, on_no) == nil {
+		if this.find2__(s, on_no__) == nil {
 			return nil
 		}
 	}
@@ -56,19 +56,19 @@ func (this *Qv___) Z__(lvl uint, buf *Buf___) (*Goto___, *Errinfo___) {
 		default:
 			o__('n', "%s", this.Args.Src)
 		}
-		o_n__()
+		O_n__()
 		o__('n', "%v %v", this.Args.Src2, this.is_through)
-		o_n__()
+		O_n__()
 		for i, s := range this.Args.A {
 			o__('n', "%d) %s", i, s)
-			o_n__()
+			O_n__()
 		}
 	}
 
 	return this.z2__(this.codes, lvl, buf)
 }
 
-var content_convert_ func([]byte, string) []byte
+var content_convert__ func([]byte, string) []byte
 
 func New_qv__(args *Args___, up_qv *Qv___) (*Qv___, *Errinfo___) {
 	var (
@@ -91,8 +91,8 @@ func New_qv__(args *Args___, up_qv *Qv___) (*Qv___, *Errinfo___) {
 					}
 				}
 			}
-			if content_convert_ != nil {
-				code = content_convert_(content, args.Src)
+			if content_convert__ != nil {
+				code = content_convert__(content, args.Src)
 			} else {
 				code = content
 			}

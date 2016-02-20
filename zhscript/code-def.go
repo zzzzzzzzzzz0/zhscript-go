@@ -3,11 +3,11 @@ package zhscript
 func is_def__(code []rune, qv *Qv___, i1 int, buf1 *Buf___, thiz1 *buf_codes___) (i int,
 kw *Keyword___, thiz *buf_codes___, is_no_arg, ok bool, err *Errinfo___) {
 	i = i1
-	f1 := func(v *Var___) bool {
+	f1__ := func(v *Var___) bool {
 		name2 := []rune(v.Name)
 		len2 := len(name2)
 		if len2 > 0 {
-			if _, ok2 := Startswith__(code, name2, i); ok2 {
+			if _, ok2 := Startswith2__(code, name2, i, true); ok2 {
 				thiz = new_buf_codes__(Kws_.Def)
 				thiz.add_text2__(v.Name)
 				thiz.names = v.Argnames
@@ -56,7 +56,7 @@ kw *Keyword___, thiz *buf_codes___, is_no_arg, ok bool, err *Errinfo___) {
 		}
 		return false
 	}
-	f := func(code code___) bool {
+	f__ := func(code code___) bool {
 		if code.kw__() == Kws_.Def {
 			set2 := new(Var___)
 			i2 := 0
@@ -102,7 +102,7 @@ kw *Keyword___, thiz *buf_codes___, is_no_arg, ok bool, err *Errinfo___) {
 			if i2 > 0 {
 				set2.argnames_add__(s2)
 			}
-			if f1(set2) {
+			if f1__(set2) {
 				return true
 			}
 		}
@@ -116,25 +116,24 @@ kw *Keyword___, thiz *buf_codes___, is_no_arg, ok bool, err *Errinfo___) {
 		if thiz3 == nil {
 			break
 		}
-		if for_codes2__(thiz3.codes, f, true) {
+		if for_codes2__(thiz3.codes, f__, true) {
 			return
 		}
 		thiz3 = thiz3.up
 	}
-	v := for_var__(f1, Kws_.Def, qv)
+	v := for_var__(f1__, Kws_.Def, qv)
 	if v != nil {
 		return
 	}
 	return
 }
 
-func for_var__(f1 func(*Var___) bool, kw *Keyword___, qv1 *Qv___) (v2 *Var___) {
+func for_var__(f1__ func(*Var___) bool, kw *Keyword___, qv1 *Qv___) (v2 *Var___) {
 	qv := qv1
 	for {
-		if qv.Vars.Ls.Find__(func(e *Em___) bool {
-			v := Var__(e)
+		if qv.Vars.Find__(func(v *Var___) bool {
 			if v.Kw == kw {
-				if f1(v) {
+				if f1__(v) {
 					v2 = v
 					return true
 				}

@@ -18,11 +18,11 @@ func (this *List___) Back_i__() int {
 	return e.Value.(int)
 }
 
-func (this *List___) Find__(f func (*Em___) bool) bool {
+func (this *List___) Find__(f__ func (*Em___) bool) bool {
 	var e2 Em___
 	for e := this.Front(); e != nil; e = e.Next() {
 		e2.Element = e
-		if f(&e2) {
+		if f__(&e2) {
 			return true
 		}
 	}

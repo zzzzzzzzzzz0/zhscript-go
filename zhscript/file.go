@@ -32,19 +32,17 @@ func Known_path_add__(path string) {
 	if !known_path_.Find__(func(s string)bool {return s == dir}) {
 		if O_path_ {
 			o__(0, "known_path %s|", dir)
-			o_n__()
+			O_n__()
 		}
 		known_path_.Add__(dir)
 	}
 }
 
 func ReadFile__(src string) ([]byte, bool) {
-	if src2, dir, ok := Get_path__(src); ok {
+	if src2, _, ok := Get_path__(src); ok {
 		b, err := ioutil.ReadFile(src2)
 		if err == nil {
-			if dir == "" {
-				Known_path_add__(src2)
-			}
+			Known_path_add__(src2)
 			return b, true
 		}
 	}
@@ -55,6 +53,10 @@ func Get_path__(src string) (src2, dir string, ok bool) {
 	var i int
 	src2 = src
 	for {
+		if O_path_ {
+			o__(0, "src %s dir %s", src2, dir)
+			O_n__()
+		}
 		_, err := os.Stat(src2)
 		if err == nil {
 			ok = true
@@ -73,10 +75,6 @@ func Get_path__(src string) (src2, dir string, ok bool) {
 		}
 		dir = known_path_.A[i]
 		src2 = dir + "/" + src
-		if O_path_ {
-			o__(0, "src %s dir %s", src2, dir)
-			o_n__()
-		}
 		i++
 	}
 	return

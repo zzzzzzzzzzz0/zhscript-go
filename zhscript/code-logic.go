@@ -19,9 +19,9 @@ func (this *code_logic___) z2__(codes *codes___, qv *Qv___, lvl, lvl2 uint) (boo
 		code := codes.a[i]
 		kw := code.kw__()
 		if O_liucheng_ {
-			o_n__()
+			O_n__()
 			o__('n', "if(%d)%d)%d)%s", lvl, lvl2, i, kw)
-			o_n__()
+			O_n__()
 		}
 		if kw.is2__(m_logic_) {
 			b := true

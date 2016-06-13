@@ -75,6 +75,9 @@ func (this *code_z___) z__(qv *Qv___, lvl uint, buf *Buf___) (goto1 *Goto___, er
 				code := this.codes.a[i]
 				i++
 				if code.kw__() == Kws_.Dunhao {
+					if has_noto_buf {
+						continue
+					}
 					has_to_buf = true
 					break
 				}

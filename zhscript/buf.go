@@ -6,6 +6,7 @@ type Buf___ struct {
 	*bytes.Buffer
 	cur *Buf_item___
 	a []*Buf_item___
+	has_write bool
 	
 	kw *Keyword___
 }
@@ -38,6 +39,21 @@ func (this *Buf___) add2__(buf2 *Buf___) {
 	}
 }
 
+func (this *Buf___) add_val__(s, u string) {
+	if this.has_write || this.cur.Val != nil {
+		this.add__()
+	}
+	this.cur.Val = &Val___{S:s, U:u}
+}
+
+func (this *Buf___) write__(s string) {
+	if this.cur.Val != nil {
+		this.add__()
+	}
+	this.has_write = true
+	this.WriteString(s)
+}
+
 func (this *Buf___) get__(i int) *Buf_item___ {
 	for i2 := len(this.a); i2 <= i; i2++ {
 		this.add__()
@@ -53,8 +69,16 @@ func (this *Buf___) set_i__(i int, i2 interface{}) {
 }
 
 func (this *Buf___) S__() (s string) {
-	for _, buf := range this.a {
-		s += buf.String()
+	i := 0
+	for _, bi := range this.a {
+		v := bi.Val
+		if v != nil {
+			s += p2s__(v, i > 0, false)
+			i++
+		} else {
+			s += bi.String()
+			i = 0
+		}
 	}
 	return
 }

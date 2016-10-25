@@ -19,6 +19,6 @@ func (this *Qv___) z2_eval__(buf2, buf *Buf___, codes *codes___) *Errinfo___ {
 		buf.get__(1).WriteString(err.Error())
 		return nil
 	}
-	buf.WriteString(res.FloatString(n))
+	buf.write__(res.FloatString(n))
 	return nil
 }

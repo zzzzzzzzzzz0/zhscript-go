@@ -46,7 +46,7 @@ func (this *codes___) z__(code []rune, qv *Qv___, from, to, end_mask, mask, lvl,
 					mask_bak.PushBack(mask)
 					mask = m_yinhao_ | m_kaidanyinhao_
 				} else {
-					buf.WriteString(kw.s)
+					buf.write__(kw.s)
 				}
 				yinhaonei++
 				continue
@@ -55,18 +55,18 @@ func (this *codes___) z__(code []rune, qv *Qv___, from, to, end_mask, mask, lvl,
 				if yinhaonei == 0 {
 					mask = mask_bak.Back_i__()
 				} else {
-					buf.WriteString(kw.s)
+					buf.write__(kw.s)
 				}
 				continue
 			case Kws_.Begin_yuanyang:
 				if yuanyangnei == 0 {
 					if code_nei != 0 {
-						buf.WriteString(kw.s)
+						buf.write__(kw.s)
 					}
 					mask_bak.PushBack(mask)
 					mask = m_yuanyang_
 				} else {
-					buf.WriteString(kw.s)
+					buf.write__(kw.s)
 				}
 				yuanyangnei++
 				continue
@@ -75,10 +75,10 @@ func (this *codes___) z__(code []rune, qv *Qv___, from, to, end_mask, mask, lvl,
 				if yuanyangnei == 0 {
 					mask = mask_bak.Back_i__()
 					if code_nei != 0 {
-						buf.WriteString(kw.s)
+						buf.write__(kw.s)
 					}
 				} else {
-					buf.WriteString(kw.s)
+					buf.write__(kw.s)
 				}
 				continue
 			case Kws_.Begin_code:
@@ -86,7 +86,7 @@ func (this *codes___) z__(code []rune, qv *Qv___, from, to, end_mask, mask, lvl,
 					mask_bak.PushBack(mask)
 					mask = m_code_ | m_yuanyang_ | m_kuohao_ //| m_yinhao_
 				} else {
-					buf.WriteString(kw.s)
+					buf.write__(kw.s)
 				}
 				code_nei++
 				continue
@@ -95,7 +95,7 @@ func (this *codes___) z__(code []rune, qv *Qv___, from, to, end_mask, mask, lvl,
 				if code_nei == 0 {
 					mask = mask_bak.Back_i__()
 				} else {
-					buf.WriteString(kw.s)
+					buf.write__(kw.s)
 				}
 				continue
 			case Kws_.Kaikuohao:
@@ -116,16 +116,16 @@ func (this *codes___) z__(code []rune, qv *Qv___, from, to, end_mask, mask, lvl,
 				thiz.separ__()
 				continue
 			case Kws_.LF:
-				buf.WriteRune('\n')
+				buf.write__("\n")
 				continue
 			case Kws_.CR:
-				buf.WriteRune('\r')
+				buf.write__("\r")
 				continue
 			case Kws_.TAB:
-				buf.WriteRune('\t')
+				buf.write__("\t")
 				continue
 			case Kws_.ESC:
-				buf.WriteRune(27)
+				buf.write__("\x1b")
 				continue
 			}
 			thiz.add_text__(buf)

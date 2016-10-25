@@ -1,5 +1,7 @@
 package zhscript
 
+import "strconv"
+
 type Qv___ struct {
 	Args *Args___
 	Vars *Vars___
@@ -136,19 +138,14 @@ func New_qv__(args *Args___, up_qv *Qv___) (*Qv___, *Errinfo___) {
 	
 	qv.Vars = new(Vars___)
 	qv.Vars.init__()
-	if args != nil {
-		switch args.Src_type {
-		case Src_is_varname_:
-			for i, s := range args.Names {
-				if i >= len(args.A) {
-					break
-				}
-				name := New_buf__()
-				name.WriteString(s)
-				val := New_buf__()
-				val.WriteString(args.A[i].S)
-				qv.Set_var__(name, val, nil, Kws_.Set)
-			}
+	if qv.Args != nil {
+		for i3, s := range qv.Args.Names {
+			name := New_buf__()
+			name.WriteString(s)
+			val := New_buf__()
+			val.WriteString(Kws_.Arg.s)
+			val.WriteString(strconv.Itoa(i3 + 1))
+			qv.Set_var__(name, val, nil, Kws_.Alias)
 		}
 	}
 	

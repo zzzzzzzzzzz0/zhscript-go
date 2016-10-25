@@ -30,7 +30,7 @@ func var__(e *Em___) *Var___ {
 type Val___ struct {
 	S string
 	I interface{}
-	Type string
+	Type, U string
 }
 
 func (this *Val___) copy_i__(val *Val___) {

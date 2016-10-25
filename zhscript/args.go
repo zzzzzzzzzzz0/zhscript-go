@@ -56,18 +56,15 @@ func (this *Args___) A__() (a []string) {
 	return
 }
 
-func (this *Args___) all__() string {
-	if !this.is_mk_all {
-		this.is_mk_all = true
-		for i, v := range this.A {
-			s := v.S
-			if i > 0 {
-				this.all += " "
-			}
-			if s == "" {
-				this.all += `""`
-				continue
-			}
+func p2s__(v *Val___, need_sp bool, by_all bool) (ret string) {
+	s := v.S
+	if by_all || v.U == "a" {
+		if need_sp {
+			ret += " "
+		}
+		if s == "" {
+			ret += `""`
+		} else {
 			b := false
 			for _, r := range s {
 				if !(r >= '0' && r <= '9' || r >= 'a' && r <= 'z' || r >= 'A' && r <= 'Z' || r == '.' || r == '-' || r == '_') {
@@ -76,13 +73,25 @@ func (this *Args___) all__() string {
 				}
 			}
 			if b {
-				this.all += "\""
+				ret += "\""
 				s = strings.Replace(s, "\"", "\\\"", -1)
 			}
-			this.all += s
+			ret += s
 			if b {
-				this.all += "\""
+				ret += "\""
 			}
+		}
+	} else {
+		ret += s
+	}
+	return
+}
+
+func (this *Args___) all__() string {
+	if !this.is_mk_all {
+		this.is_mk_all = true
+		for i, v := range this.A {
+			this.all += p2s__(v, i > 0, true)
 		}
 	}
 	return this.all

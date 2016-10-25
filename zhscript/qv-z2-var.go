@@ -145,26 +145,49 @@ func (this *Qv___) z2_var2__(name string, annota *Strings___, qv  *Qv___, codes 
 		case strings.HasPrefix(name, Kws_.Args.s):
 			n := name[len(Kws_.Args.s):]
 			from := 0
+			max := len(this.Args.A) - 1
+			max2 := max + 2
+			to := max
 			if n != "" {
+				var n2 string
+				i4 := strings.Index(n, "/")
+				if i4 >= 0 {
+					n2 = n[i4 + 1:]
+					n = n[0:i4]
+				}
 				i3, err3 := strconv.Atoi(n)
 				if err3 == nil {
 					from = i3 - 1
 				} else {
 					break
 				}
+				if from < 0 {
+					from += max2
+					if from < 0 {
+						from = 0
+					}
+				}
+				if n2 != "" {
+					i3, err3 = strconv.Atoi(n2)
+					if err3 == nil {
+						to = i3 - 1
+					} else {
+						break
+					}
+				}
+				if to < 0 {
+					to += max2
+				}
 			}
 			switch kw {
 			case Kws_.Kaidanyinhao:
 				if load != nil {
-					for i := from; i < len(this.Args.A); i++ {
+					for i := from; i <= to; i++ {
 						load.args.Add2__(this.Args.A[i])
 					}
 				} else {
-					for i := from; i < len(this.Args.A); i++ {
-						if i > from {
-							buf.WriteString(" ")
-						}
-						buf.WriteString(this.Args.A[i].S)
+					for i := from; i <= to; i++ {
+						buf.add_val__(this.Args.A[i].S, "a")
 					}
 					is_to_buf = true
 				}
@@ -175,15 +198,15 @@ func (this *Qv___) z2_var2__(name string, annota *Strings___, qv  *Qv___, codes 
 			exist = true
 		case name == Kws_.Arg.s:
 			exist, is_to_buf = this.z2_var2_z__(kw, func() {
-				buf.WriteString(qv.Args.all__())
+				buf.write__(qv.Args.all__())
 			}, buf)
 		case name == Kws_.Arg.s + "0":
 			exist, is_to_buf = this.z2_var2_z__(kw, func() {
-				buf.WriteString(qv.Args.Src2)
+				buf.write__(qv.Args.Src2)
 			}, buf)
 		case name == Kws_.Arg.s + Kws_.Length.s:
 			exist, is_to_buf = this.z2_var2_z__(kw, func() {
-				buf.WriteString(strconv.Itoa(len(qv.Args.A)))
+				buf.write__(strconv.Itoa(len(qv.Args.A)))
 			}, buf)
 		case strings.HasPrefix(name, Kws_.Arg.s):
 			n := name[len(Kws_.Arg.s):]
@@ -192,18 +215,38 @@ func (this *Qv___) z2_var2__(name string, annota *Strings___, qv  *Qv___, codes 
 				i3--
 				if i3 >= 0 && i3 < len(qv.Args.A) {
 					exist, is_to_buf = this.z2_var2_z__(kw, func() {
-						buf.WriteString(qv.Args.A[i3].S)
+						buf.write__(qv.Args.A[i3].S)
 					}, buf)
+				} else {
+					//参数不存在便做空
+					exist, is_to_buf = true, true
 				}
 			}
 		}
+		/*if !exist {
+			for i3, s := range qv.Args.Names {
+				if s == name {
+					if i3 < len(qv.Args.A) {
+						exist, is_to_buf = this.z2_var2_z__(kw, func() {
+							buf.write__(qv.Args.A[i3].S)
+						}, buf)
+					} else {
+						//参数不存在便做空
+						exist, is_to_buf = true, true
+					}
+					break
+				}
+			}
+		}*/
 	}
-	switch name {
-	case Kws_.Vars.s:
-		exist, is_to_buf = this.z2_var2_z__(kw, func() {
-			buf.cur.Val = &Val___{I:qv, Type:"q"}
-			qv.Up = nil
-		}, buf)
+	if !exist {
+		switch name {
+		case Kws_.Vars.s:
+			exist, is_to_buf = this.z2_var2_z__(kw, func() {
+				buf.cur.Val = &Val___{I:qv, Type:"q"}
+				qv.Up = nil
+			}, buf)
+		}
 	}
 	if !exist {
 		qv = find_qv__(annota, qv)
@@ -235,7 +278,7 @@ func (this *Qv___) z2_var2__(name string, annota *Strings___, qv  *Qv___, codes 
 					default:
 						switch v.Val.Type {
 						case "":
-							buf.WriteString(v.Val.S)
+							buf.write__(v.Val.S)
 						default:
 							buf.cur.Val = v.Val
 						}
@@ -266,6 +309,11 @@ func (this *Qv___) z2_var2__(name string, annota *Strings___, qv  *Qv___, codes 
 		}
 	}
 	if !exist {
+		/*//类似bash的变量不存在便做空
+		switch kw {
+		case Kws_.Kaidanyinhao:
+			return true, nil
+		}*/
 		return false, New_errinfo__(name, Errs_.Exist, codes.String())
 	}
 	return is_to_buf, nil

@@ -9,8 +9,7 @@ func (this *Qv___) z_code__(code code___, lvl uint, buf *Buf___) (*Goto___, *Err
 	}
 	switch kw {
 	case Kws_.Kaiyinhao:
-		t := code.(*code_text___)
-		buf.WriteString(t.s)
+		buf.write__(code.(*code_text___).s)
 		return nil, nil
 	case Kws_.Dunhao:
 		buf.add__()
@@ -70,13 +69,6 @@ func (this *Qv___) z_code__(code code___, lvl uint, buf *Buf___) (*Goto___, *Err
 		if err3 != nil {
 			return nil, err3
 		}
-	case Kws_.Echo:
-		for _, bi := range buf2.a {
-			/*if bi.Val != nil {
-				fmt.Printf("%T%p", bi.Val.I, bi.Val.I)
-			}*/
-			fmt.Print(bi.String())
-		}
 	default:
 		s := buf2.S__()
 		if O_liucheng_ {
@@ -96,6 +88,8 @@ func (this *Qv___) z_code__(code code___, lvl uint, buf *Buf___) (*Goto___, *Err
 		case Kws_.Return:
 			return &Goto___{Kws_.Return, s}, nil
 			
+		case Kws_.Echo:
+			fmt.Print(s)
 		case Kws_.Exec:
 			this.z2_exec__(s, buf)
 		}
